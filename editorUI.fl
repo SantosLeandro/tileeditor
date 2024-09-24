@@ -1,0 +1,82 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0308
+header_name {.h}
+code_name {.cpp}
+class EditorUI {open
+} {
+  Function {EditorUI()} {open
+  } {
+    Fl_Window mainWindow {open
+      xywh {352 194 1165 780} type Single resizable
+      code0 {\#include <FL/Fl_File_Chooser.H>}
+      code1 {Fl::scheme("plastic");}
+      code2 {\#include "level.h"}
+      code3 {\#include "loader.h"} visible
+    } {
+      Fl_Box editorView {
+        label EditorView
+        xywh {320 25 845 860} box UP_BOX
+        code0 {\#include "editor.h"}
+        class EditorView
+      }
+      Fl_Menu_Bar {} {open
+        xywh {0 0 1165 25}
+      } {
+        Submenu {} {
+          label File open
+          xywh {0 0 100 20}
+        } {
+          MenuItem menuNew {
+            label New
+            xywh {0 0 100 20}
+          }
+          MenuItem menuOpen {
+            label Open
+            callback {//open file
+char *newfile = fl_file_chooser("Open File?", "*", filename);
+LoadLevel(newfile);} selected
+            xywh {0 0 100 20}
+          }
+          MenuItem menuSave {
+            label Save
+            xywh {0 0 100 20}
+          }
+          MenuItem menuSaveAs {
+            label {Save As}
+            callback {//save as}
+            xywh {0 0 100 20}
+          }
+        }
+      }
+      Fl_Group {} {open
+        xywh {0 25 320 770}
+      } {
+        Fl_Tabs {} {open
+          xywh {0 215 320 580}
+        } {
+          Fl_Group {} {
+            label Tileset open
+            xywh {0 235 320 560}
+          } {
+            Fl_Box tilesetPicker {
+              xywh {5 245 310 335} box ENGRAVED_BOX
+            }
+          }
+          Fl_Group {} {
+            label GameObjects open
+            xywh {0 235 320 560} hide
+          } {}
+        }
+        Fl_Browser BrowserLayer {
+          xywh {5 30 310 175}
+        }
+      }
+    }
+  }
+  Function {show(int argc, char **argv)} {open
+  } {
+    code {mainWindow->show(argc,argv);} {}
+  }
+  decl {char* filename} {protected local
+  }
+}
