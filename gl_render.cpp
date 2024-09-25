@@ -27,7 +27,7 @@ void GLRender::Prepare2D()
   glPushMatrix();
   glLoadIdentity();
 
-  //glScalef(scale, scale, scale);
+  // glScalef(scale, scale, scale);
 }
 
 void GLRender::DrawTest()
@@ -47,6 +47,33 @@ void GLRender::DrawTest()
   // glEnd();
 }
 
+void GLRender::DrawCursor(int x, int y, Level *level)
+{
+  if(!level){
+    return;
+  }
+  x = x / level->tileSize * level->tileSize;
+  y = y / level->tileSize * level->tileSize;
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glColor4f(5.0, 0.7f, 0.0f,0.5f);
+  glBegin(GL_QUADS);
+  glVertex2f(x, y);
+  glVertex2f(x+level->tileSize, y);
+  glVertex2f(x+level->tileSize, y+level->tileSize);
+  glVertex2f(x,y+level->tileSize);
+  glEnd();
+
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
+  glColor4f(1.0, 0.7f, 0.0f, 1.0f);
+  glBegin(GL_LINES);
+  glVertex2f(x, y);
+  glVertex2f(x+level->tileSize, y);
+  glVertex2f(x+level->tileSize, y+level->tileSize);
+  glVertex2f(x,y+level->tileSize);
+  glEnd();
+}
+
 void GLRender::DrawLayer(const Layer *layer, int t)
 {
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -59,29 +86,28 @@ void GLRender::DrawLayer(const Layer *layer, int t)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
   glColor3f(1, 1, 1);
   glBegin(GL_QUADS);
-  for (int h=0; h < layer->data.size(); h++ )
+  for (int h = 0; h < layer->data.size(); h++)
   {
-    for (int w=0; w < layer->data[0].size(); w++)
+    for (int w = 0; w < layer->data[0].size(); w++)
     {
-      if (layer->data[h][w] < 0) {
+      if (layer->data[h][w] < 0)
+      {
         continue;
       }
       float srcY = (float)(layer->data[h][w] / (layer->texture->Width() / t) * t) / layer->texture->Height();
       float srcX = (float)(layer->data[h][w] % (layer->texture->Width() / t) * t) / layer->texture->Width();
       float srcW = (float)t / layer->texture->Width();
       float srcH = (float)t / layer->texture->Height();
-      //glColor3f(1, layer->data[h][w] / 10, 0);
+      // glColor3f(1, layer->data[h][w] / 10, 0);
       int tile = t;
 
-      
       // std::cout << "textureW "<<layer->texture->Width() <<"\n";
       // std::cout << "textureH "<<layer->texture->Height() <<"\n";
       // std::cout <<" tileY "<<srcY<<"\n";
       // std::cout <<" tileX "<<srcX<<"\n";
       // std::cout <<" tileW "<<srcW<<"\n";
       // std::cout <<" tileH "<<srcH<<"\n\n";
-      
-      
+
       //**
       glTexCoord2f(srcX, srcY);
       glVertex3f(w * tile, h * tile, 0);
@@ -95,35 +121,38 @@ void GLRender::DrawLayer(const Layer *layer, int t)
       glTexCoord2f(srcX + srcW, srcY);
       glVertex3f(w * tile + tile, h * tile, 0);
     }
-}
+  }
   glEnd();
 }
 
 void GLRender::DrawLevel(const Level *level)
 {
-  if(!level){
+  if (!level)
+  {
     return;
   }
   glLoadIdentity();
-  glTranslatef(x,y,0);
+  glTranslatef(x, y, 0);
   glScalef(scale, scale, scale);
-  
-  DrawBackground(level->w,level->h,level->tileSize);
-  DrawGrid(level->w,level->h,level->tileSize);
+
+  DrawBackground(level->w, level->h, level->tileSize);
+  DrawGrid(level->w, level->h, level->tileSize);
+
   for (int i = 0; i < level->layer.size(); i++)
   {
-    if(level->layer[i].texture != nullptr) {
+    if (level->layer[i].texture != nullptr)
+    {
       DrawLayer(&level->layer[i], level->tileSize);
     }
-    
   }
 }
 
 void GLRender::DrawGrid(int width, int height, int t)
 {
   glBindTexture(GL_TEXTURE_2D, 0);
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  glColor3f(0.9f, 0.9f, 0.9f);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
+  // glLineWidth(2.0f);
+  glColor4f(0.3f, 0.3f, 0.3f, 0.1f);
   glBegin(GL_QUADS);
   int tile = t;
   for (int h = 0; h < height; h++)
@@ -149,7 +178,7 @@ void GLRender::DrawBackground(int w, int h, int t)
   glBindTexture(GL_TEXTURE_2D, 0);
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glBegin(GL_QUADS);
-  glColor3f(0.1f, 0.1f, 0.1f);
+  glColor3f(0.2f, 0.2f, 0.2f);
   glVertex3f(0, 0, 0);
   glVertex3f(0, h * t, 0);
   glVertex3f(w * t, h * t, 0);
@@ -159,10 +188,11 @@ void GLRender::DrawBackground(int w, int h, int t)
 
 void GLRender::ClearScreen()
 {
-  //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glClearColor(0.27, 0.53, 0.71, 1.0);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glClearColor(0.27, 0.53, 0.7, 1.0);
   glClear(GL_COLOR_BUFFER_BIT);
-  
+
   // glLoadIdentity();
 }
 
@@ -177,6 +207,21 @@ void GLRender::ScaleUp()
 void GLRender::ScaleDown()
 {
   scale += 1.0f;
+}
+
+const int GLRender::GetScale()
+{
+    return scale;
+}
+
+const int GLRender::GetX()
+{
+    return x;
+}
+
+const int GLRender::GetY()
+{
+    return y;
 }
 
 void GLRender::Translate(int x, int y)

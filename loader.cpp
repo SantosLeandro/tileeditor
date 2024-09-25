@@ -25,7 +25,8 @@ Level *LoadLevel(const char *filename)
     level->h = root["height"].get<int>();
 
     const json &jLayers = root["layer"];
-
+    //level->layer.resize(jLayers.size());
+    level->layer.clear();
     for (const auto &layer : jLayers)
     {
         level->layer.push_back(Layer());

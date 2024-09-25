@@ -17,7 +17,14 @@ public:
 
     void draw() override;
     int handle(int event);
+    void handleMouseMovement(int x, int y);
+
+    void insertTile(int x, int y, int id);
     Level *level = nullptr;
     int oldX = 0;
     int oldY = 0;
+    int mouseX = 0;
+    int mouseY = 0;
+    int tileId = 3;
+    int layerId = 0;
 };

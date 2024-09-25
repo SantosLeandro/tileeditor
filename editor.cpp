@@ -15,6 +15,7 @@ void EditorView::draw()
     }
     render.ClearScreen();
     render.DrawLevel(level);
+    render.DrawCursor(mouseX,mouseY,level);
 }
 
 // Override the handle() function to capture events
@@ -51,6 +52,12 @@ int EditorView::handle(int event)
         std::cout << "Mouse button pressed at ("
                   << Fl::event_x() << ", " << Fl::event_y() << ")"
                   << std::endl;
+
+        if (Fl::event_button() == FL_LEFT_MOUSE)
+        {
+            this->insertTile(mouseX,mouseY,tileId);
+            this->redraw();
+        }
         return 1; // Event was handled
     case FL_DRAG: // Mouse dragging
         if (Fl::event_button() == FL_MIDDLE_MOUSE)
@@ -75,8 +82,36 @@ int EditorView::handle(int event)
         return 1;    // Accept the focus
     case FL_UNFOCUS: // Window loses focus
         return 1;    // Accept the unfocus
+    case FL_MOVE:
+       this->handleMouseMovement(Fl::event_x(),Fl::event_y());
+        return 1;
     default:
         // Pass other events to the default handler
+        
         return Fl_Gl_Window::handle(event);
     }
+}
+
+void EditorView::handleMouseMovement(int x, int y)
+{
+    mouseX = (x - render.GetX()) / render.GetScale();
+    mouseY = (y - render.GetY()) / render.GetScale();
+    this->redraw();
+}
+
+void EditorView::insertTile(int x, int y, int id)
+{
+    if(!level) {
+        return;
+    }
+
+    int h = y / level->tileSize;
+    int w = x / level->tileSize;
+    // std::cout << "size" << level->layer[0].data.size()<<"\n";
+    // std::cout << "size" << level->layer[0].data[0].size()<<"\n";
+    // std::cout << "posX: " << w << std::endl;
+    // std::cout << "posY: " << h << std::endl;
+    // std::cout << this->level->layer[0].data[h][w] <<"\n";
+    this->level->layer[0].data[h][w] = id;
+    //level->layer[0].data[h][w] = tileId;
 }

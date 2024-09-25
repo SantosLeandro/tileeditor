@@ -12,6 +12,7 @@ public:
     void UpdateViewPort(int w, int h);
     void Prepare2D();
     void DrawTest();
+    void DrawCursor(int x, int y, Level *level);
     void DrawLayer(const Layer *layer, int t);
     void DrawLevel(const Level *level);
     void DrawGrid(int w, int h, int t);
@@ -19,5 +20,8 @@ public:
     void ClearScreen();
     void ScaleUp();
     void ScaleDown();
+    const int GetScale();
+    const int GetX();
+    const int GetY();
     void Translate(int x, int y);
 };
