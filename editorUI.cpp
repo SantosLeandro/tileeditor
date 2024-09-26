@@ -4,12 +4,12 @@
 
 void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   //open file
-char *newfile = fl_file_chooser("Open File?", "*.json", filename);
-if(editorView->level){
-  delete editorView->level;
-}
-editorView->level = LoadLevel(newfile);
-editorView->redraw();
+  char *newfile = fl_file_chooser("Open File?", "*.json", filename);
+  if(editorView->level){
+    delete editorView->level;
+  }
+  editorView->level = LoadLevel(newfile);
+  editorView->redraw();
 }
 void EditorUI::cb_menuOpen(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuOpen_i(o,v);

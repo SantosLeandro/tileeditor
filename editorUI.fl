@@ -33,8 +33,12 @@ class EditorUI {open
           MenuItem menuOpen {
             label Open
             callback {//open file
-char *newfile = fl_file_chooser("Open File?", "*", filename);
-LoadLevel(newfile);} selected
+  char *newfile = fl_file_chooser("Open File?", "*.json", filename);
+  if(editorView->level){
+    delete editorView->level;
+  }
+  editorView->level = LoadLevel(newfile);
+  editorView->redraw();} selected
             xywh {0 0 100 20}
           }
           MenuItem menuSave {
