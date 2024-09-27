@@ -24,6 +24,7 @@ set(SOURCES
     texture.cpp
     layer.cpp
     loader.cpp
+    tilesetUI.cpp
 )
 
 # Add executable

@@ -10,6 +10,7 @@ void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   }
   editorView->level = LoadLevel(newfile);
   editorView->redraw();
+  tilesetUI->load_image("tileset_1616.png");
 }
 void EditorUI::cb_menuOpen(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuOpen_i(o,v);
@@ -56,9 +57,17 @@ EditorUI::EditorUI() {
     { Fl_Group* o = new Fl_Group(0, 25, 320, 770);
       { Fl_Tabs* o = new Fl_Tabs(0, 215, 320, 580);
         { Fl_Group* o = new Fl_Group(0, 235, 320, 560, "Tileset");
-          { tilesetPicker = new Fl_Box(5, 245, 310, 335);
-            tilesetPicker->box(FL_ENGRAVED_BOX);
-          } // Fl_Box* tilesetPicker
+          { tilesetUI = new TilesetUI(5, 245, 310, 335);
+            tilesetUI->box(FL_ENGRAVED_BOX);
+            tilesetUI->color(FL_BACKGROUND_COLOR);
+            tilesetUI->selection_color(FL_BACKGROUND_COLOR);
+            tilesetUI->labeltype(FL_NORMAL_LABEL);
+            tilesetUI->labelfont(0);
+            tilesetUI->labelsize(14);
+            tilesetUI->labelcolor(FL_FOREGROUND_COLOR);
+            tilesetUI->align(Fl_Align(FL_ALIGN_CENTER));
+            tilesetUI->when(FL_WHEN_RELEASE);
+          } // TilesetUI* tilesetUI
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(0, 235, 320, 560, "GameObjects");
@@ -79,4 +88,29 @@ EditorUI::EditorUI() {
 
 void EditorUI::show(int argc, char **argv) {
   mainWindow->show(argc,argv);
+}
+
+void EditorUI::loadTileset(const char* file) {
+  if (file != NULL) {
+          Fl_Image *img = nullptr;
+  
+          // Determine the file extension and load the image accordingly
+          std::string filename = file;
+          if (filename.find(".bmp") != std::string::npos) {
+              img = new Fl_BMP_Image(file);  // Load BMP image
+          } else if (filename.find(".png") != std::string::npos) {
+              img = new Fl_PNG_Image(file);  // Load PNG image
+          } else if (filename.find(".jpg") != std::string::npos || filename.find(".jpeg") != std::string::npos) {
+              img = new Fl_JPEG_Image(file); // Load JPEG image
+          }
+  
+          // Check if the image is valid and set it to the box
+          if (img && img->w() > 0 && img->h() > 0) {
+              tilesetUI->image(img);               // Set the image in the box
+              tilesetUI->redraw();                 // Redraw the box to show the image
+          } else {
+              delete img;                    // Clean up if the image was invalid
+              fl_alert("Invalid Image file!");
+          }
+      }
 }

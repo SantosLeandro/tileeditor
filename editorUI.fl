@@ -2,16 +2,31 @@
 version 1.0308
 header_name {.h}
 code_name {.cpp}
+decl {\#include <FL/Fl_File_Chooser.H>} {public global
+}
+
+decl {\#include "level.h"} {public global
+}
+
+decl {\#include "loader.h"} {public global
+}
+
+decl {\#include <FL/Fl_BMP_Image.H>} {public global
+}
+
+decl {\#include <FL/Fl_PNG_Image.H>} {public global
+}
+
+decl {\#include <FL/Fl_JPEG_Image.H>} {public global
+}
+
 class EditorUI {open
 } {
   Function {EditorUI()} {open
   } {
     Fl_Window mainWindow {open
       xywh {352 194 1165 780} type Single resizable
-      code0 {\#include <FL/Fl_File_Chooser.H>}
-      code1 {Fl::scheme("plastic");}
-      code2 {\#include "level.h"}
-      code3 {\#include "loader.h"} visible
+      code0 {Fl::scheme("plastic");} visible
     } {
       Fl_Box editorView {
         label EditorView
@@ -38,7 +53,8 @@ class EditorUI {open
     delete editorView->level;
   }
   editorView->level = LoadLevel(newfile);
-  editorView->redraw();} selected
+  editorView->redraw();
+  tilesetUI->load_image("tileset_1616.png");} selected
             xywh {0 0 100 20}
           }
           MenuItem menuSave {
@@ -62,8 +78,10 @@ class EditorUI {open
             label Tileset open
             xywh {0 235 320 560}
           } {
-            Fl_Box tilesetPicker {
+            Fl_Box tilesetUI {
               xywh {5 245 310 335} box ENGRAVED_BOX
+              code0 {\#include "tilesetUI.h"}
+              class TilesetUI
             }
           }
           Fl_Group {} {
@@ -82,5 +100,30 @@ class EditorUI {open
     code {mainWindow->show(argc,argv);} {}
   }
   decl {char* filename} {protected local
+  }
+  Function {loadTileset(const char* file)} {open
+  } {
+    code {if (file != NULL) {
+        Fl_Image *img = nullptr;
+
+        // Determine the file extension and load the image accordingly
+        std::string filename = file;
+        if (filename.find(".bmp") != std::string::npos) {
+            img = new Fl_BMP_Image(file);  // Load BMP image
+        } else if (filename.find(".png") != std::string::npos) {
+            img = new Fl_PNG_Image(file);  // Load PNG image
+        } else if (filename.find(".jpg") != std::string::npos || filename.find(".jpeg") != std::string::npos) {
+            img = new Fl_JPEG_Image(file); // Load JPEG image
+        }
+
+        // Check if the image is valid and set it to the box
+        if (img && img->w() > 0 && img->h() > 0) {
+            tilesetUI->image(img);               // Set the image in the box
+            tilesetUI->redraw();                 // Redraw the box to show the image
+        } else {
+            delete img;                    // Clean up if the image was invalid
+            fl_alert("Invalid Image file!");
+        }
+    }} {}
   }
 }

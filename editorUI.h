@@ -3,15 +3,18 @@
 #ifndef editorUI_h
 #define editorUI_h
 #include <FL/Fl.H>
-#include <FL/Fl_Window.H>
 #include <FL/Fl_File_Chooser.H>
 #include "level.h"
 #include "loader.h"
+#include <FL/Fl_BMP_Image.H>
+#include <FL/Fl_PNG_Image.H>
+#include <FL/Fl_JPEG_Image.H>
+#include <FL/Fl_Window.H>
 #include "editor.h"
 #include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Tabs.H>
-#include <FL/Fl_Box.H>
+#include "tilesetUI.h"
 #include <FL/Fl_Browser.H>
 
 class EditorUI {
@@ -32,10 +35,12 @@ private:
   inline void cb_menuSaveAs_i(Fl_Menu_*, void*);
   static void cb_menuSaveAs(Fl_Menu_*, void*);
 public:
-  Fl_Box *tilesetPicker;
+  TilesetUI *tilesetUI;
   Fl_Browser *BrowserLayer;
   void show(int argc, char **argv);
 protected:
   char* filename; 
+public:
+  void loadTileset(const char* file);
 };
 #endif
