@@ -23,7 +23,9 @@ public:
 
     // Load and display the selected image
     void load_image(const char *file);
-
+    int tileSize = 16;
+    int mouseX = 0;
+    int mouseY = 0;
 private:
     Fl_Image *img;
     Fl_Image *cpImg;

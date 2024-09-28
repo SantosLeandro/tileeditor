@@ -2,74 +2,74 @@
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl.H>
 
-// Constructor
+
 TilesetUI::TilesetUI(int X, int Y, int W, int H, const char *L)
     : Fl_Box(X, Y, W, H, L), clicked(false) {}
 
-// Override the draw() method for custom drawing
+
 void TilesetUI::draw() {
-    // Call the base class draw() to ensure the image is drawn
+
     Fl_Box::draw();
     if(img){
-        cpImg = img->copy(512,512);
-        cpImg->draw(x(),y(),w(),h());
+        img->draw(x(),y(),w(),h());
+        // cpImg = img->copy(512,512);
+        // cpImg->draw(x(),y(),w(),h());
+        // w(512);
+        // h(512);
     }
     
     //fl_draw_image(img,0,0,512,512);
-   
-    // Custom drawing logic (for example, a red rectangle)
-    fl_color(FL_RED);  // Set drawing color to red
 
+    fl_color(FL_RED);
+    fl_rect(mouseX+10, mouseY+10, tileSize, tileSize);
     if (clicked) {
-        // Draw a rectangle when the mouse is clicked
-        fl_rect(x() + 20, y() + 20, 100, 100);
+        
     } else {
-        // Draw a circle when not clicked
-        fl_circle(x() + w() / 2, y() + h() / 2, 50);
+        //fl_circle(x() + w() / 2, y() + h() / 2, 50);
     }
 }
 
-// Override the handle() method to capture mouse click events
 int TilesetUI::handle(int event) {
     switch (event) {
-        case FL_PUSH:  // Mouse click detected
-            if (Fl::event_button() == FL_LEFT_MOUSE) {  // Check if it's a left mouse click
+        case FL_PUSH:  
+            if (Fl::event_button() == FL_LEFT_MOUSE) {  
                 std::cout << "Mouse clicked at (" << Fl::event_x() << ", " << Fl::event_y() << ")\n";
-                clicked = !clicked;  // Toggle clicked state
-                redraw();  // Redraw the box to reflect the new state
+                clicked = !clicked;  
+                redraw();  
             }
-            return 1;  // Indicate event was handled
+            return 1;
+        case FL_MOVE:
+            std::cout <<" mouse move\n";
+           
+            mouseX = Fl::event_x()/ tileSize * tileSize;
+            mouseY = Fl::event_y()/ tileSize * tileSize;
+            std::cout <<" x "<<Fl::event_x()<<" y "<<Fl::event_y()<<"\n";
+            redraw();
+            return 1;
         default:
-            return Fl_Box::handle(event);  // Call the base class for other events
+            return Fl_Box::handle(event);  
     }
 }
 
-// Function to load and display the selected image
 void TilesetUI::load_image(const char *file) {
-    // Open the file chooser dialog with BMP, PNG, and JPEG filters
-    //const char *file = fl_file_chooser("Choose an Image (BMP, PNG, or JPEG)", "*.bmp *.png *.jpg *.jpeg", NULL);
 
-    // Check if a file was selected
     if (file != NULL) {
         img = nullptr;
 
-        // Determine the file extension and load the image accordingly
         std::string filename = file;
         if (filename.find(".bmp") != std::string::npos) {
-            img = new Fl_BMP_Image(file);  // Load BMP image
+            img = new Fl_BMP_Image(file); 
         } else if (filename.find(".png") != std::string::npos) {
-            img = new Fl_PNG_Image(file);  // Load PNG image
+            img = new Fl_PNG_Image(file);  
         } else if (filename.find(".jpg") != std::string::npos || filename.find(".jpeg") != std::string::npos) {
-            img = new Fl_JPEG_Image(file); // Load JPEG image
+            img = new Fl_JPEG_Image(file); 
         }
 
-        // Check if the image is valid and set it to the box
-        if (img && img->w() > 0 && img->h() > 0) {
-            
-            //this->image(img);               // Set the image in the box
-            this->redraw();                 // Redraw the box to show the image
+        
+        if (img && img->w() > 0 && img->h() > 0) {               
+            this->redraw();                 
         } else {
-            delete img;                    // Clean up if the image was invalid
+            delete img;                   
             fl_alert("Invalid Image file!");
         }
     }

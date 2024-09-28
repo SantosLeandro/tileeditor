@@ -14,6 +14,7 @@
 #include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Tabs.H>
+#include <FL/Fl_Scroll.H>
 #include "tilesetUI.h"
 #include <FL/Fl_Browser.H>
 
