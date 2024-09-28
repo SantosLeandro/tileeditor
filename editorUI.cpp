@@ -16,9 +16,17 @@ void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
   }
+  BrowserLayer->add("foreground");
 }
 void EditorUI::cb_menuOpen(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuOpen_i(o,v);
+}
+
+void EditorUI::cb_menuSave_i(Fl_Menu_*, void*) {
+  SaveLevel(editorView->level,"backup.json");
+}
+void EditorUI::cb_menuSave(Fl_Menu_* o, void* v) {
+  ((EditorUI*)(o->parent()->user_data()))->cb_menuSave_i(o,v);
 }
 
 void EditorUI::cb_menuSaveAs_i(Fl_Menu_*, void*) {
@@ -32,7 +40,7 @@ Fl_Menu_Item EditorUI::menu_[] = {
  {"File", 0,  0, 0, 64, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"New", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Open", 0,  (Fl_Callback*)EditorUI::cb_menuOpen, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
- {"Save", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"Save", 0,  (Fl_Callback*)EditorUI::cb_menuSave, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Save As", 0,  (Fl_Callback*)EditorUI::cb_menuSaveAs, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {0,0,0,0,0,0,0,0,0}

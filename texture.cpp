@@ -23,6 +23,7 @@ const GLuint Texture::Id()
 
 void Texture::LoadFromFile(const char *filename)
 {
+    this->filename = filename;
     glGenTextures(1, &textureID);
 
     std::cout<<textureID<<"\n";

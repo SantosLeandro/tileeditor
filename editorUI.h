@@ -31,6 +31,10 @@ private:
   static void cb_menuOpen(Fl_Menu_*, void*);
 public:
   static Fl_Menu_Item *menuSave;
+private:
+  inline void cb_menuSave_i(Fl_Menu_*, void*);
+  static void cb_menuSave(Fl_Menu_*, void*);
+public:
   static Fl_Menu_Item *menuSaveAs;
 private:
   inline void cb_menuSaveAs_i(Fl_Menu_*, void*);

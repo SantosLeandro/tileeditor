@@ -3,8 +3,11 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream> 
+#include <unordered_map>
+#include <vector>
+#include <string>
 
-using json = nlohmann::json;
+using json = nlohmann::ordered_json;
 
 Level *LoadLevel(const char *filename)
 {
@@ -62,4 +65,36 @@ Level *LoadLevel(const char *filename)
     std::cout << root.dump() << "\n";
 
     return level;
+}
+
+bool SaveLevel(Level *level, const char *filename)
+{
+    json root;
+    root["tilesize"] = level->tileSize;
+    root["width"] = level->w;
+    root["height"] = level->h;
+    root["name"] = level->name;
+    for(int i=0; i < level->layer.size();i++){
+        root["layer"][i]["name"] = level->layer[i].name;
+        root["layer"][i]["width"] = level->layer[i].Width();
+        root["layer"][i]["height"] = level->layer[i].Height();
+        root["layer"][i]["texture"] = level->layer[i].texture->filename;
+        root["layer"][i]["data"] = level->layer[i].getDataStr();
+    }
+
+    std::ofstream file("output.json");
+
+    // Check if the file opened successfully
+    if (!file) {
+        std::cerr << "Error opening file!" << std::endl;
+        return 1;
+    }
+
+    // Write the JSON object to the file
+    file << root.dump(2);  // '4' means pretty print with 4 spaces for indentation
+
+    // Close the file
+    file.close();
+
+    return false;
 }

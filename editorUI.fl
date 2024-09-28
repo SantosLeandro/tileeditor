@@ -68,6 +68,7 @@ class EditorUI {open
           }
           MenuItem menuSave {
             label Save
+            callback {SaveLevel(editorView->level,"backup.json");} selected
             xywh {0 0 100 20}
           }
           MenuItem menuSaveAs {
@@ -98,7 +99,7 @@ class EditorUI {open
             xywh {10 235 310 560} hide
           } {}
         }
-        Fl_Browser BrowserLayer {selected
+        Fl_Browser BrowserLayer {
           xywh {5 30 310 175} type Hold
         }
       }

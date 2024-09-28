@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/gl.h>
+#include <string>
 
 class Texture
 {
@@ -14,5 +15,5 @@ public:
     void LoadFromFile(const char* name);
     int Width();
     int Height();
-
+    std::string filename;
 };

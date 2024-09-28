@@ -15,4 +15,5 @@ public:
     std::vector<std::vector<int>> data;
     Texture *texture = nullptr;
     void InsertTile(int x, int y, int id);
+    std::string getDataStr();
 };
