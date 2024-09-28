@@ -55,7 +55,7 @@ int EditorView::handle(int event)
 
         if (Fl::event_button() == FL_LEFT_MOUSE)
         {
-            this->insertTile(mouseX,mouseY,TileSelector::tileId);
+            this->insertTile(mouseX,mouseY,TileSelector::tileId,true);
             this->redraw();
         }
         return 1; // Event was handled
@@ -63,6 +63,11 @@ int EditorView::handle(int event)
         if (Fl::event_button() == FL_MIDDLE_MOUSE)
         {
             render.Translate(deltaX, deltaY);
+            this->redraw();
+        }
+        if (Fl::event_button() == FL_RIGHT_MOUSE)
+        {
+            std::cout << "Selection tool\n";
             this->redraw();
         }
         std::cout << "Mouse drag at ("
@@ -73,6 +78,14 @@ int EditorView::handle(int event)
         std::cout << "Mouse button released" << std::endl;
         return 1;
     case FL_KEYDOWN: // Key press
+        if ((Fl::event_state() & FL_CTRL) && Fl::event_key() == 'z' && rollback.size() > 0) {
+            insertTile(rollback.back().x,rollback.back().y,rollback.back().id,false);
+            rollback.pop_back();
+            //std::cout<<rollback[last].x<<" y "<<rollback[last].y<<rollback[last].id<<"\n";
+             std::cout << "rollback\n";
+            this->redraw();
+        }
+        
         std::cout << "Key pressed: " << Fl::event_key() << std::endl;
         return 1;
     case FL_KEYUP: // Key release
@@ -99,7 +112,7 @@ void EditorView::handleMouseMovement(int x, int y)
     this->redraw();
 }
 
-void EditorView::insertTile(int x, int y, int id)
+void EditorView::insertTile(int x, int y, int id, bool tilememo)
 {
     if(!level) {
         return;
@@ -112,6 +125,15 @@ void EditorView::insertTile(int x, int y, int id)
     // std::cout << "posX: " << w << std::endl;
     // std::cout << "posY: " << h << std::endl;
     // std::cout << this->level->layer[0].data[h][w] <<"\n";
+    if(tilememo) {
+        rollback.push_back(TileMemo(x,y,this->level->layer[0].data[h][w]));
+        if(rollback.size() > 100 ){
+            rollback.pop_front();
+        }
+    }
+    
     this->level->layer[0].data[h][w] = id;
+
+    
     //level->layer[0].data[h][w] = tileId;
 }

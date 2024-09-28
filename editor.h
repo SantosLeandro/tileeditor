@@ -6,6 +6,18 @@
 #include <FL/gl.h>
 #include "gl_render.h"
 #include "global.h"
+#include <list>
+
+class TileMemo {
+public:
+    int x,y,id;
+    TileMemo(){}
+    TileMemo(int x, int y, int id){
+        this->x = x;
+        this->y = y;
+        this->id = id;
+    }
+};
 
 // Custom OpenGL window inheriting from Fl_Gl_Window
 class EditorView : public Fl_Gl_Window
@@ -19,8 +31,8 @@ public:
     void draw() override;
     int handle(int event);
     void handleMouseMovement(int x, int y);
-
-    void insertTile(int x, int y, int id);
+    void handleSelectionTool(int startX, int startY, int endX, int endY);
+    void insertTile(int x, int y, int id, bool tilememo);
     Level *level = nullptr;
     int oldX = 0;
     int oldY = 0;
@@ -28,4 +40,6 @@ public:
     int mouseY = 0;
     int tileId = 3;
     int layerId = 0;
+    bool selectionTool = false;
+    std::list<TileMemo> rollback;
 };
