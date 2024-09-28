@@ -36,4 +36,21 @@ Optional (for future features):
 #### Linux (Fedora example using `dnf`):
 
 ```bash
-sudo dnf install fltk fltk-devel nlohmann-json-devel opengl
+sudo dnf install fltk fltk-devel nlohmann-json-devel opengl stb_image-devel
+```
+#### Linux (Debian example using `apt`):
+```bash
+sudo apt install libfltk1.3-dev libfltk1.3 libnlohmann-json-dev libgl1-mesa-dev libglu1-mesa-dev libstb-dev
+```
+### Build
+```bash
+mkdir build
+cd build
+cmake ..
+make
+```
+### Run
+```bash
+./editor
+```
+
