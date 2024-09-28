@@ -5,6 +5,9 @@
 void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   //open file
   char *newfile = fl_file_chooser("Open File?", "*.json", filename);
+  if(newfile == nullptr){
+    return;
+  }
   if(editorView->level){
     delete editorView->level;
   }
@@ -30,7 +33,11 @@ void EditorUI::cb_menuSave(Fl_Menu_* o, void* v) {
 }
 
 void EditorUI::cb_menuSaveAs_i(Fl_Menu_*, void*) {
-  //save as;
+  //save as
+ char *newfile = fl_file_chooser("Save as?", "*.json", filename);
+ if(newfile){
+   SaveLevel(editorView->level,newfile);
+ };
 }
 void EditorUI::cb_menuSaveAs(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuSaveAs_i(o,v);

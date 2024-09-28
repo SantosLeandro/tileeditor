@@ -82,7 +82,7 @@ bool SaveLevel(Level *level, const char *filename)
         root["layer"][i]["data"] = level->layer[i].getDataStr();
     }
 
-    std::ofstream file("output.json");
+    std::ofstream file(filename);
 
     // Check if the file opened successfully
     if (!file) {

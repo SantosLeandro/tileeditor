@@ -52,6 +52,9 @@ class EditorUI {open
             label Open
             callback {//open file
   char *newfile = fl_file_chooser("Open File?", "*.json", filename);
+  if(newfile == nullptr){
+    return;
+  }
   if(editorView->level){
     delete editorView->level;
   }
@@ -63,17 +66,21 @@ class EditorUI {open
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
   }
-  BrowserLayer->add("foreground");}
+  BrowserLayer->add("foreground");} selected
             xywh {0 0 100 20}
           }
           MenuItem menuSave {
             label Save
-            callback {SaveLevel(editorView->level,"backup.json");} selected
+            callback {SaveLevel(editorView->level,"backup.json");}
             xywh {0 0 100 20}
           }
           MenuItem menuSaveAs {
             label {Save As}
-            callback {//save as}
+            callback {//save as
+ char *newfile = fl_file_chooser("Save as?", "*.json", filename);
+ if(newfile){
+   SaveLevel(editorView->level,newfile);
+ }}
             xywh {0 0 100 20}
           }
         }
