@@ -5,6 +5,7 @@
 #include <FL/Fl_Window.H>
 #include <FL/gl.h>
 #include "gl_render.h"
+#include "global.h"
 
 // Custom OpenGL window inheriting from Fl_Gl_Window
 class EditorView : public Fl_Gl_Window

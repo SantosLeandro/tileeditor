@@ -25,6 +25,7 @@ set(SOURCES
     layer.cpp
     loader.cpp
     tilesetUI.cpp
+    global.cpp
 )
 
 # Add executable

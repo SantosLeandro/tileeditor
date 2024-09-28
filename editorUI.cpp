@@ -10,6 +10,7 @@ void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   }
   editorView->level = LoadLevel(newfile);
   editorView->redraw();
+  TileSelector::tileSize = editorView->level->tileSize;
   tilesetUI->load_image("tileset_1616.png");
 }
 void EditorUI::cb_menuOpen(Fl_Menu_* o, void* v) {
@@ -58,21 +59,17 @@ EditorUI::EditorUI() {
       { Fl_Tabs* o = new Fl_Tabs(0, 215, 320, 580);
         { Fl_Group* o = new Fl_Group(0, 235, 320, 560, "Tileset");
           o->box(FL_GLEAM_DOWN_FRAME);
-          { Fl_Scroll* o = new Fl_Scroll(5, 242, 310, 322);
-            o->box(FL_PLASTIC_UP_BOX);
-            { tilesetUI = new TilesetUI(10, 250, 300, 309);
-              tilesetUI->box(FL_FLAT_BOX);
-              tilesetUI->color(FL_DARK2);
-              tilesetUI->selection_color(FL_BACKGROUND_COLOR);
-              tilesetUI->labeltype(FL_NORMAL_LABEL);
-              tilesetUI->labelfont(0);
-              tilesetUI->labelsize(14);
-              tilesetUI->labelcolor(FL_FOREGROUND_COLOR);
-              tilesetUI->align(Fl_Align(FL_ALIGN_CENTER));
-              tilesetUI->when(FL_WHEN_RELEASE);
-            } // TilesetUI* tilesetUI
-            o->end();
-          } // Fl_Scroll* o
+          { tilesetUI = new TilesetUI(5, 246, 305, 304);
+            tilesetUI->box(FL_NO_BOX);
+            tilesetUI->color((Fl_Color)44);
+            tilesetUI->selection_color(FL_DARK2);
+            tilesetUI->labeltype(FL_NORMAL_LABEL);
+            tilesetUI->labelfont(0);
+            tilesetUI->labelsize(14);
+            tilesetUI->labelcolor(FL_FOREGROUND_COLOR);
+            tilesetUI->align(Fl_Align(581));
+            tilesetUI->when(FL_WHEN_RELEASE);
+          } // TilesetUI* tilesetUI
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(10, 235, 310, 560, "GameObjects");

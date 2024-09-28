@@ -55,7 +55,7 @@ int EditorView::handle(int event)
 
         if (Fl::event_button() == FL_LEFT_MOUSE)
         {
-            this->insertTile(mouseX,mouseY,tileId);
+            this->insertTile(mouseX,mouseY,TileSelector::tileId);
             this->redraw();
         }
         return 1; // Event was handled

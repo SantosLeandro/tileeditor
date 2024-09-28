@@ -9,12 +9,12 @@
 #include <FL/Fl_BMP_Image.H>
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_JPEG_Image.H>
+#include "global.h"
 #include <FL/Fl_Window.H>
 #include "editor.h"
 #include <FL/Fl_Menu_Bar.H>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Tabs.H>
-#include <FL/Fl_Scroll.H>
 #include "tilesetUI.h"
 #include <FL/Fl_Browser.H>
 

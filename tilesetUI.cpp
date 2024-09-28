@@ -4,14 +4,15 @@
 
 
 TilesetUI::TilesetUI(int X, int Y, int W, int H, const char *L)
-    : Fl_Box(X, Y, W, H, L), clicked(false) {}
+    : Fl_Window(X, Y, W, H, L), clicked(false) {}
 
 
 void TilesetUI::draw() {
 
-    Fl_Box::draw();
+    Fl_Window::draw();
     if(img){
-        img->draw(x(),y(),w(),h());
+        std::cout <<" x() "<<x()<<" y() "<<y()<<"\n";
+        img->draw(0,0,w(),h());
         // cpImg = img->copy(512,512);
         // cpImg->draw(x(),y(),w(),h());
         // w(512);
@@ -21,7 +22,7 @@ void TilesetUI::draw() {
     //fl_draw_image(img,0,0,512,512);
 
     fl_color(FL_RED);
-    fl_rect(mouseX+10, mouseY+10, tileSize, tileSize);
+    fl_rect(mouseX, mouseY, tileSize, tileSize);
     if (clicked) {
         
     } else {
@@ -30,24 +31,28 @@ void TilesetUI::draw() {
 }
 
 int TilesetUI::handle(int event) {
+    tileSize = TileSelector::tileSize;
     switch (event) {
         case FL_PUSH:  
             if (Fl::event_button() == FL_LEFT_MOUSE) {  
-                std::cout << "Mouse clicked at (" << Fl::event_x() << ", " << Fl::event_y() << ")\n";
-                clicked = !clicked;  
+                if(img){
+                    int col = img->w() / tileSize;
+                    tileId =  (Fl::event_y()/ tileSize  * col) + (Fl::event_x() / tileSize);
+                    TileSelector::tileId = tileId;
+                }
                 redraw();  
             }
             return 1;
         case FL_MOVE:
-            std::cout <<" mouse move\n";
+            //std::cout <<" mouse move\n";
            
             mouseX = Fl::event_x()/ tileSize * tileSize;
             mouseY = Fl::event_y()/ tileSize * tileSize;
-            std::cout <<" x "<<Fl::event_x()<<" y "<<Fl::event_y()<<"\n";
+            //std::cout <<" x "<<Fl::event_x()<<" y "<<Fl::event_y()<<"\n";
             redraw();
             return 1;
         default:
-            return Fl_Box::handle(event);  
+            return Fl_Window::handle(event);  
     }
 }
 

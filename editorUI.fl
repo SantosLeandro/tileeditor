@@ -20,6 +20,9 @@ decl {\#include <FL/Fl_PNG_Image.H>} {public global
 decl {\#include <FL/Fl_JPEG_Image.H>} {public global
 }
 
+decl {\#include "global.h"} {public global
+}
+
 class EditorUI {open
 } {
   Function {EditorUI()} {open
@@ -29,7 +32,7 @@ class EditorUI {open
       code0 {Fl::scheme("plastic");} visible
     } {
       Fl_Box editorView {
-        label EditorView selected
+        label EditorView
         xywh {320 25 845 860} box UP_BOX
         code0 {\#include "editor.h"}
         class EditorView
@@ -54,7 +57,8 @@ class EditorUI {open
   }
   editorView->level = LoadLevel(newfile);
   editorView->redraw();
-  tilesetUI->load_image("tileset_1616.png");}
+  TileSelector::tileSize = editorView->level->tileSize;
+  tilesetUI->load_image("tileset_1616.png");} selected
             xywh {0 0 100 20}
           }
           MenuItem menuSave {
@@ -78,14 +82,10 @@ class EditorUI {open
             label Tileset open
             xywh {0 235 320 560} box GLEAM_DOWN_FRAME
           } {
-            Fl_Scroll {} {open
-              xywh {5 242 310 322} box PLASTIC_UP_BOX
-            } {
-              Fl_Box tilesetUI {
-                xywh {10 250 300 309} box FLAT_BOX color 45
-                code0 {\#include "tilesetUI.h"}
-                class TilesetUI
-              }
+            Fl_Box tilesetUI {
+              xywh {5 246 305 304} color 44 selection_color 45 align 581
+              code0 {\#include "tilesetUI.h"}
+              class TilesetUI
             }
           }
           Fl_Group {} {
