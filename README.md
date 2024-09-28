@@ -1,5 +1,5 @@
 # Tilemap Editor
-
+![alt text](https://github.com/SantosLeandro/tileeditor/blob/main/docs/img/preview.png?raw=true)
 ## Overview
 
 Tilemap Editor is an OpenGL-based tool designed to help users create, edit, and manage 2D tilemaps. The editor allows users to define layers, load textures, and render tilemaps efficiently for use in game development or other graphical applications.
