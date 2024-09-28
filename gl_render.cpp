@@ -52,8 +52,9 @@ void GLRender::DrawCursor(int x, int y, Level *level)
   if(!level){
     return;
   }
-  x = x / level->tileSize * level->tileSize;
-  y = y / level->tileSize * level->tileSize;
+  x = (x / level->tileSize) * level->tileSize;
+  y = (y / level->tileSize) * level->tileSize;
+
   glBindTexture(GL_TEXTURE_2D, 0);
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glColor4f(5.0, 0.7f, 0.0f,0.5f);
