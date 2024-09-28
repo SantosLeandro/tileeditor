@@ -138,7 +138,6 @@ void GLRender::DrawLevel(const Level *level)
 
   DrawBackground(level->w, level->h, level->tileSize);
   DrawGrid(level->w, level->h, level->tileSize);
-
   for (int i = 0; i < level->layer.size(); i++)
   {
     if (level->layer[i].texture != nullptr)
@@ -151,9 +150,9 @@ void GLRender::DrawLevel(const Level *level)
 void GLRender::DrawGrid(int width, int height, int t)
 {
   glBindTexture(GL_TEXTURE_2D, 0);
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
-  // glLineWidth(2.0f);
-  glColor4f(0.3f, 0.3f, 0.3f, 0.1f);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glLineWidth(2.0f);
+  glColor4f(0.5f, 0.5f, 0.5f, 0.2f);
   glBegin(GL_QUADS);
   int tile = t;
   for (int h = 0; h < height; h++)
@@ -191,7 +190,8 @@ void GLRender::ClearScreen()
 {
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glClearColor(0.27, 0.53, 0.7, 1.0);
+  //glClearColor(0.27, 0.53, 0.7, 1.0); //blue color
+  glClearColor(0.1, 0.1, 0.1, 1.0); //black
   glClear(GL_COLOR_BUFFER_BIT);
 
   // glLoadIdentity();
