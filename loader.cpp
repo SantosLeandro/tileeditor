@@ -31,7 +31,7 @@ Level *LoadLevel(const char *filename)
     {
         level->layer.push_back(Layer());
         int index = level->layer.size() - 1;
-        std::string name = layer["name"].get<std::string>();
+        level->layer[index].name = layer["name"].get<std::string>();
         int width = layer["width"].get<int>();
         int height = layer["height"].get<int>();
 

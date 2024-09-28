@@ -28,7 +28,7 @@ class EditorUI {open
   Function {EditorUI()} {open
   } {
     Fl_Window mainWindow {open
-      xywh {352 194 1165 780} type Single resizable
+      xywh {639 224 1165 780} type Single resizable
       code0 {Fl::scheme("plastic");} visible
     } {
       Fl_Box editorView {
@@ -58,7 +58,12 @@ class EditorUI {open
   editorView->level = LoadLevel(newfile);
   editorView->redraw();
   TileSelector::tileSize = editorView->level->tileSize;
-  tilesetUI->load_image("tileset_1616.png");} selected
+  tilesetUI->load_image("tileset_1616.png");
+  BrowserLayer->clear();
+  for(int i=0; i < editorView->level->layer.size();i++) {
+    BrowserLayer->add(editorView->level->layer[i].name.c_str());
+  }
+  BrowserLayer->add("foreground");}
             xywh {0 0 100 20}
           }
           MenuItem menuSave {
@@ -93,8 +98,8 @@ class EditorUI {open
             xywh {10 235 310 560} hide
           } {}
         }
-        Fl_Browser BrowserLayer {
-          xywh {5 30 310 175}
+        Fl_Browser BrowserLayer {selected
+          xywh {5 30 310 175} type Hold
         }
       }
     }

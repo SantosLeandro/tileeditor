@@ -1,6 +1,7 @@
 #pragma once
 
 #include <FL/Fl.H>
+#include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_BMP_Image.H>
 #include <FL/Fl_PNG_Image.H>
@@ -11,7 +12,7 @@
 #include "global.h"
 
 // Custom class for Fl_Box to handle mouse clicks and custom drawing
-class TilesetUI : public Fl_Window {
+class TilesetUI : public Fl_Double_Window {
 public:
     // Constructor
     TilesetUI(int X, int Y, int W, int H, const char *L = 0);
@@ -28,6 +29,7 @@ public:
     int mouseX = 0;
     int mouseY = 0;
     int tileId = 0;
+    int scale = 1;
 private:
     Fl_Image *img;
     Fl_Image *cpImg;

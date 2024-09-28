@@ -12,6 +12,10 @@ void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   editorView->redraw();
   TileSelector::tileSize = editorView->level->tileSize;
   tilesetUI->load_image("tileset_1616.png");
+  BrowserLayer->clear();
+  for(int i=0; i < editorView->level->layer.size();i++) {
+    BrowserLayer->add(editorView->level->layer[i].name.c_str());
+  }
 }
 void EditorUI::cb_menuOpen(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuOpen_i(o,v);
@@ -79,6 +83,7 @@ EditorUI::EditorUI() {
         o->end();
       } // Fl_Tabs* o
       { BrowserLayer = new Fl_Browser(5, 30, 310, 175);
+        BrowserLayer->type(2);
       } // Fl_Browser* BrowserLayer
       o->end();
     } // Fl_Group* o
