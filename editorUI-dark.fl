@@ -29,7 +29,7 @@ class EditorUI {open
   } {
     Fl_Window mainWindow {
       label LevelEditor open
-      xywh {379 240 1280 720} type Single resizable
+      xywh {342 118 1280 720} type Single labeltype NO_LABEL resizable
       code0 {Fl::scheme("plastic");} visible
     } {
       Fl_Box editorView {
@@ -39,7 +39,7 @@ class EditorUI {open
         class EditorView
       }
       Fl_Menu_Bar {} {open
-        xywh {0 0 1280 25}
+        xywh {0 0 1280 25} box FLAT_BOX color 35 labelcolor 51 textcolor 54
       } {
         Submenu {} {
           label File open
@@ -100,7 +100,7 @@ class EditorUI {open
           }
           MenuItem {} {
             label Delete
-            callback {editorView->deleteTilesData();} selected
+            callback {editorView->deleteTilesData();}
             xywh {0 0 100 20} shortcut 0xffff
           }
           MenuItem {} {
@@ -110,14 +110,14 @@ class EditorUI {open
         }
       }
       Fl_Group {} {open
-        xywh {-10 25 335 780}
+        xywh {-10 25 335 780} box DOWN_BOX color 36
       } {
         Fl_Tabs {} {open
-          xywh {5 315 310 400}
+          xywh {5 315 310 400} box UP_BOX color 36 selection_color 39 labelcolor 55
         } {
           Fl_Group {} {
-            label Tileset open
-            xywh {5 340 310 375} box GLEAM_DOWN_FRAME hide
+            label Tileset open selected
+            xywh {5 340 310 375} box GLEAM_DOWN_FRAME selection_color 40 labelcolor 48
           } {
             Fl_Box tilesetUI {
               xywh {10 345 300 365} color 44 selection_color 45 align 581
@@ -127,14 +127,14 @@ class EditorUI {open
           }
           Fl_Group {} {
             label GameObjects open
-            xywh {5 340 310 375}
+            xywh {5 340 310 375} color 40 selection_color 40 labelcolor 55 hide
           } {}
         }
         Fl_Browser BrowserLayer {
-          xywh {5 80 310 170} type Hold
+          xywh {5 80 310 170} type Hold color 38 labelcolor 48 textcolor 55
         }
         Fl_Group {} {open
-          xywh {5 30 310 40} box THIN_UP_BOX
+          xywh {5 30 310 40} box ENGRAVED_BOX color 35
         } {
           Fl_Button btnPencil {
             image {icons/pencil.png} xywh {10 35 45 30}

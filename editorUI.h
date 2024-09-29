@@ -40,6 +40,10 @@ public:
 private:
   inline void cb_menuSaveAs_i(Fl_Menu_*, void*);
   static void cb_menuSaveAs(Fl_Menu_*, void*);
+  inline void cb_Undo_i(Fl_Menu_*, void*);
+  static void cb_Undo(Fl_Menu_*, void*);
+  inline void cb_Delete_i(Fl_Menu_*, void*);
+  static void cb_Delete(Fl_Menu_*, void*);
 public:
   TilesetUI *tilesetUI;
   Fl_Browser *BrowserLayer;
@@ -50,7 +54,15 @@ private:
   static void cb_btnEraser(Fl_Button*, void*);
 public:
   Fl_Button *btnCopy;
+private:
+  inline void cb_btnCopy_i(Fl_Button*, void*);
+  static void cb_btnCopy(Fl_Button*, void*);
+public:
   Fl_Button *btnPaste;
+private:
+  inline void cb_btnPaste_i(Fl_Button*, void*);
+  static void cb_btnPaste(Fl_Button*, void*);
+public:
   Fl_Button *btnSelect;
   void show(int argc, char **argv);
 protected:

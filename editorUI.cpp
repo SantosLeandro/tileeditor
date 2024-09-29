@@ -43,12 +43,32 @@ void EditorUI::cb_menuSaveAs(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuSaveAs_i(o,v);
 }
 
+void EditorUI::cb_Undo_i(Fl_Menu_*, void*) {
+  editorView->undo();
+}
+void EditorUI::cb_Undo(Fl_Menu_* o, void* v) {
+  ((EditorUI*)(o->parent()->user_data()))->cb_Undo_i(o,v);
+}
+
+void EditorUI::cb_Delete_i(Fl_Menu_*, void*) {
+  editorView->deleteTilesData();
+}
+void EditorUI::cb_Delete(Fl_Menu_* o, void* v) {
+  ((EditorUI*)(o->parent()->user_data()))->cb_Delete_i(o,v);
+}
+
 Fl_Menu_Item EditorUI::menu_[] = {
  {"File", 0,  0, 0, 64, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"New", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Open", 0,  (Fl_Callback*)EditorUI::cb_menuOpen, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Save", 0,  (Fl_Callback*)EditorUI::cb_menuSave, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Save As", 0,  (Fl_Callback*)EditorUI::cb_menuSaveAs, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0},
+ {"Edit", 0,  0, 0, 64, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"Undo", 0x4007a,  (Fl_Callback*)EditorUI::cb_Undo, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"Redo", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"Delete", 0xffff,  (Fl_Callback*)EditorUI::cb_Delete, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"Select", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {0,0,0,0,0,0,0,0,0}
 };
@@ -145,6 +165,13 @@ static Fl_Image *image_eraser() {
   return image;
 }
 
+void EditorUI::cb_btnCopy_i(Fl_Button*, void*) {
+  editorView->copyTilesData();
+}
+void EditorUI::cb_btnCopy(Fl_Button* o, void* v) {
+  ((EditorUI*)(o->parent()->parent()->parent()->user_data()))->cb_btnCopy_i(o,v);
+}
+
 static const unsigned char idata_copy[] =
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,0,0,0,
@@ -186,6 +213,13 @@ static const unsigned char idata_copy[] =
 static Fl_Image *image_copy() {
   static Fl_Image *image = new Fl_RGB_Image(idata_copy, 16, 16, 4, 0);
   return image;
+}
+
+void EditorUI::cb_btnPaste_i(Fl_Button*, void*) {
+  editorView->pasteTilesData();
+}
+void EditorUI::cb_btnPaste(Fl_Button* o, void* v) {
+  ((EditorUI*)(o->parent()->parent()->parent()->user_data()))->cb_btnPaste_i(o,v);
 }
 
 static const unsigned char idata_paste[] =
@@ -327,11 +361,13 @@ EditorUI::EditorUI() {
           btnCopy->tooltip("Copy block of tiles");
           btnCopy->shortcut(0x40063);
           btnCopy->image( image_copy() );
+          btnCopy->callback((Fl_Callback*)cb_btnCopy);
         } // Fl_Button* btnCopy
         { btnPaste = new Fl_Button(175, 35, 45, 30);
           btnPaste->tooltip("Paste");
           btnPaste->shortcut(0x40076);
           btnPaste->image( image_paste() );
+          btnPaste->callback((Fl_Callback*)cb_btnPaste);
         } // Fl_Button* btnPaste
         { btnSelect = new Fl_Button(230, 35, 45, 30);
           btnSelect->tooltip("Selection Tool");
