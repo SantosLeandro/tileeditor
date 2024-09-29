@@ -16,11 +16,16 @@ void EditorView::draw()
     render.ClearScreen();
     render.DrawLevel(level);
     render.DrawCursor(mouseX,mouseY,level);
+    if(selectionTool) {
+    render.DrawSelectionTool(level,startX,startY,selectX,selectY);  
+    }
+    
 }
 
 // Override the handle() function to capture events
 int EditorView::handle(int event)
 {
+    selectionTool = false;
     int deltaX = Fl::event_x() - oldX;
     int deltaY = Fl::event_y() - oldY;
     oldX = Fl::event_x();
@@ -55,8 +60,19 @@ int EditorView::handle(int event)
 
         if (Fl::event_button() == FL_LEFT_MOUSE)
         {
+            if(copyTiles.size()>0){
+                std::list<TileMemo>::iterator it;
+                for (it = copyTiles.begin(); it != copyTiles.end(); ++it){
+                    this->insertTile(mouseX,mouseY,it->id,true);
+                }
+            }
             this->insertTile(mouseX,mouseY,TileSelector::tileId,true);
             this->redraw();
+        }
+        if (Fl::event_button() == FL_RIGHT_MOUSE)
+        {
+            this->startX = Fl::event_x();
+            this->startY = Fl::event_y();
         }
         return 1; // Event was handled
     case FL_DRAG: // Mouse dragging
@@ -67,8 +83,18 @@ int EditorView::handle(int event)
         }
         if (Fl::event_button() == FL_RIGHT_MOUSE)
         {
-            std::cout << "Selection tool\n";
+            selectionTool = true; 
+            selectX =  Fl::event_x();// - startX;
+            selectY =  Fl::event_y();// - startY;
+            
+            int h = selectX / level->tileSize;
+            int w = selectY / level->tileSize;
+            copyTiles.push_back(TileMemo(w,h,this->level->layer[0].data[h][w]));
             this->redraw();
+        } else {
+            std::cout <<" stop drag\n";
+           selectX = 0;
+           selectY = 0; 
         }
         std::cout << "Mouse drag at ("
                   << Fl::event_x() << ", " << Fl::event_y() << ")"
@@ -110,6 +136,10 @@ void EditorView::handleMouseMovement(int x, int y)
     mouseX = (x - render.GetX()) / render.GetScale();
     mouseY = (y - render.GetY()) / render.GetScale();
     this->redraw();
+}
+
+void EditorView::handleSelectionTool(int startX, int startY, int endX, int endY)
+{
 }
 
 void EditorView::insertTile(int x, int y, int id, bool tilememo)

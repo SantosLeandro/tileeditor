@@ -15,6 +15,7 @@ public:
     void DrawCursor(int x, int y, Level *level);
     void DrawLayer(const Layer *layer, int t);
     void DrawLevel(const Level *level);
+    void DrawSelectionTool(const Level *level, int x1, int y1, int x2, int y2);
     void DrawGrid(int w, int h, int t);
     void DrawBackground(int w, int h, int t);
     void ClearScreen();

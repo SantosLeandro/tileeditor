@@ -28,17 +28,17 @@ class EditorUI {open
   Function {EditorUI()} {open
   } {
     Fl_Window mainWindow {open
-      xywh {639 224 1165 780} type Single resizable
+      xywh {379 240 1280 720} type Single resizable
       code0 {Fl::scheme("plastic");} visible
     } {
       Fl_Box editorView {
         label EditorView
-        xywh {320 25 845 860} box UP_BOX
+        xywh {320 25 960 695} box UP_BOX
         code0 {\#include "editor.h"}
         class EditorView
       }
       Fl_Menu_Bar {} {open
-        xywh {0 0 1165 25}
+        xywh {0 0 1280 25}
       } {
         Submenu {} {
           label File open
@@ -66,7 +66,7 @@ class EditorUI {open
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
   }
-  BrowserLayer->add("foreground");} selected
+  BrowserLayer->add("foreground");}
             xywh {0 0 100 20}
           }
           MenuItem menuSave {
@@ -86,28 +86,28 @@ class EditorUI {open
         }
       }
       Fl_Group {} {open
-        xywh {-10 25 340 770}
+        xywh {-10 25 335 780}
       } {
         Fl_Tabs {} {open
-          xywh {0 215 320 580}
+          xywh {5 235 310 400}
         } {
           Fl_Group {} {
             label Tileset open
-            xywh {0 235 320 560} box GLEAM_DOWN_FRAME
+            xywh {5 260 310 375} box GLEAM_DOWN_FRAME hide
           } {
             Fl_Box tilesetUI {
-              xywh {5 246 305 304} color 44 selection_color 45 align 581
+              xywh {10 265 300 365} color 44 selection_color 45 align 581
               code0 {\#include "tilesetUI.h"}
               class TilesetUI
             }
           }
           Fl_Group {} {
-            label GameObjects open
-            xywh {10 235 310 560} hide
+            label GameObjects open selected
+            xywh {5 260 310 375}
           } {}
         }
         Fl_Browser BrowserLayer {
-          xywh {5 30 310 175} type Hold
+          xywh {5 25 310 170} type Hold
         }
       }
     }

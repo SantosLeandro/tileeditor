@@ -41,5 +41,10 @@ public:
     int tileId = 3;
     int layerId = 0;
     bool selectionTool = false;
+    int startX = 0;
+    int startY = 0;
+    int selectX = 0;
+    int selectY = 0;
     std::list<TileMemo> rollback;
+    std::list<TileMemo> copyTiles;
 };
