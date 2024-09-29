@@ -27,7 +27,8 @@ class EditorUI {open
 } {
   Function {EditorUI()} {open
   } {
-    Fl_Window mainWindow {open
+    Fl_Window mainWindow {
+      label LevelEditor open
       xywh {379 240 1280 720} type Single resizable
       code0 {Fl::scheme("plastic");} visible
     } {
@@ -89,25 +90,45 @@ class EditorUI {open
         xywh {-10 25 335 780}
       } {
         Fl_Tabs {} {open
-          xywh {5 235 310 400}
+          xywh {5 315 310 400}
         } {
           Fl_Group {} {
             label Tileset open
-            xywh {5 260 310 375} box GLEAM_DOWN_FRAME hide
+            xywh {5 340 310 375} box GLEAM_DOWN_FRAME hide
           } {
             Fl_Box tilesetUI {
-              xywh {10 265 300 365} color 44 selection_color 45 align 581
+              xywh {10 345 300 365} color 44 selection_color 45 align 581
               code0 {\#include "tilesetUI.h"}
               class TilesetUI
             }
           }
           Fl_Group {} {
-            label GameObjects open selected
-            xywh {5 260 310 375}
+            label GameObjects open
+            xywh {5 340 310 375}
           } {}
         }
         Fl_Browser BrowserLayer {
-          xywh {5 25 310 170} type Hold
+          xywh {5 80 310 170} type Hold
+        }
+        Fl_Group {} {open
+          xywh {5 30 310 40} box THIN_UP_BOX
+        } {
+          Fl_Button btnPencil {
+            image {icons/pencil.png} xywh {10 35 45 30}
+          }
+          Fl_Button btnEraser {
+            callback {TileSelector::tileId = -1;}
+            image {icons/eraser.png} xywh {65 35 45 30}
+          }
+          Fl_Button btnCopy {
+            tooltip {Copy block of tiles} image {icons/copy.png} xywh {120 35 45 30} shortcut 0x40063
+          }
+          Fl_Button btnPaste {
+            tooltip Paste image {icons/paste.png} xywh {175 35 45 30} shortcut 0x40076
+          }
+          Fl_Button btnSelect {selected
+            tooltip {Selection Tool} image {icons/selection.png} xywh {230 35 45 30}
+          }
         }
       }
     }

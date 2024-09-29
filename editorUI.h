@@ -17,6 +17,7 @@
 #include <FL/Fl_Tabs.H>
 #include "tilesetUI.h"
 #include <FL/Fl_Browser.H>
+#include <FL/Fl_Button.H>
 
 class EditorUI {
 public:
@@ -42,6 +43,15 @@ private:
 public:
   TilesetUI *tilesetUI;
   Fl_Browser *BrowserLayer;
+  Fl_Button *btnPencil;
+  Fl_Button *btnEraser;
+private:
+  inline void cb_btnEraser_i(Fl_Button*, void*);
+  static void cb_btnEraser(Fl_Button*, void*);
+public:
+  Fl_Button *btnCopy;
+  Fl_Button *btnPaste;
+  Fl_Button *btnSelect;
   void show(int argc, char **argv);
 protected:
   char* filename; 

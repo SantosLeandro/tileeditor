@@ -40,6 +40,8 @@ public:
     void handleMouseMovement(int x, int y);
     void handleSelectionTool(int startX, int startY, int endX, int endY);
     void insertTile(int x, int y, int id, bool tilememo);
+    void CopyTiles();
+    void PasteTiles();
     Level *level = nullptr;
     int oldX = 0;
     int oldY = 0;

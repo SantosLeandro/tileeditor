@@ -150,9 +150,19 @@ void GLRender::DrawLevel(const Level *level)
 void GLRender::DrawSelectionTool(const Level *level, int x1, int y1, int x2, int y2)
 {
   glBindTexture(GL_TEXTURE_2D, 0);
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   glLineWidth(2.0f);
-  glColor4f(1.0, 0.0f, 0.0f, 1.0f);
+  glColor4f(0.0, 0.0f, 1.0f, 0.3f);
+  glBegin(GL_QUADS);
+  glVertex2f(x1, y1);
+  glVertex2f(x2, y1);
+  glVertex2f(x2, y2);
+  glVertex2f(x1,y2);
+  glEnd();
+
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glColor4f(0.0, 0.0f, 1.0f, 1.0f);
+  glLineWidth(2.0f*scale);
   glBegin(GL_QUADS);
   glVertex2f(x1, y1);
   glVertex2f(x2, y1);
