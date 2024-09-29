@@ -25,7 +25,7 @@ void EditorView::draw()
 // Override the handle() function to capture events
 int EditorView::handle(int event)
 {
-    selectionTool = false;
+    //selectionTool = false;
     int deltaX = Fl::event_x() - oldX;
     int deltaY = Fl::event_y() - oldY;
     oldX = Fl::event_x();
@@ -60,19 +60,19 @@ int EditorView::handle(int event)
 
         if (Fl::event_button() == FL_LEFT_MOUSE)
         {
-            if(copyTiles.size()>0){
-                std::list<TileMemo>::iterator it;
-                for (it = copyTiles.begin(); it != copyTiles.end(); ++it){
-                    this->insertTile(mouseX,mouseY,it->id,true);
-                }
-            }
+            // if(copyTiles.size()>0){
+            //     std::list<TileMemo>::iterator it;
+            //     for (it = copyTiles.begin(); it != copyTiles.end(); ++it){
+            //         this->insertTile(mouseX,mouseY,it->id,true);
+            //     }
+            // }
             this->insertTile(mouseX,mouseY,TileSelector::tileId,true);
             this->redraw();
         }
         if (Fl::event_button() == FL_RIGHT_MOUSE)
         {
-            this->startX = Fl::event_x();
-            this->startY = Fl::event_y();
+            this->startX = (Fl::event_x() - render.GetX()) / render.GetScale();
+            this->startY = (Fl::event_y() - render.GetY()) / render.GetScale();
         }
         return 1; // Event was handled
     case FL_DRAG: // Mouse dragging
@@ -83,13 +83,12 @@ int EditorView::handle(int event)
         }
         if (Fl::event_button() == FL_RIGHT_MOUSE)
         {
-            selectionTool = true; 
-            selectX =  Fl::event_x();// - startX;
-            selectY =  Fl::event_y();// - startY;
+            selectionTool = true;
+            selectX = (Fl::event_x() - render.GetX()) / render.GetScale();
+            selectY = (Fl::event_y() - render.GetY()) / render.GetScale();
+            //selectX =  Fl::event_x();// - startX;
+            //selectY =  Fl::event_y();// - startY;
             
-            int h = selectX / level->tileSize;
-            int w = selectY / level->tileSize;
-            copyTiles.push_back(TileMemo(w,h,this->level->layer[0].data[h][w]));
             this->redraw();
         } else {
             std::cout <<" stop drag\n";
@@ -109,6 +108,42 @@ int EditorView::handle(int event)
             rollback.pop_back();
             //std::cout<<rollback[last].x<<" y "<<rollback[last].y<<rollback[last].id<<"\n";
              std::cout << "rollback\n";
+            this->redraw();
+        }
+
+        if ((Fl::event_state() & FL_CTRL) && Fl::event_key() == 'c') {
+            selectionTool = false;
+            copyTiles.clear();
+            int endW = selectX / level->tileSize;
+            int endH = selectY / level->tileSize;
+
+            int startW = startX / level->tileSize;
+            int startH = startY / level->tileSize;
+            
+            int yv = 0;
+            for(int i = startH; i <= endH; i++){
+                 int xv = 0;
+                 for(int j = startW; j <= endW; j++){
+                    std::cout <<" TILE COPY "<<this->level->layer[0].data[i][j]<<"\n";
+                    copyTiles.push_back(TileMemo(xv*level->tileSize,yv*level->tileSize,this->level->layer[0].data[i][j]));
+                    xv+=1;
+                 }
+                 yv+=1;
+            }
+            //copyTiles.push_back(TileMemo(w,h,this->level->layer[0].data[h][w]));
+
+
+            this->redraw();
+        }
+
+        if ((Fl::event_state() & FL_CTRL) && Fl::event_key() == 'v') {
+
+            if(copyTiles.size()>0){
+                std::list<TileMemo>::iterator it;
+                for (it = copyTiles.begin(); it != copyTiles.end(); ++it){
+                    this->insertTile(mouseX+it->x,mouseY+it->y,it->id,true);
+                }
+            }
             this->redraw();
         }
         

@@ -19,6 +19,13 @@ public:
     }
 };
 
+class TileCopy {
+    public:
+    std::vector<int> tiles;
+    int w,h;
+    int layerId;
+};
+
 // Custom OpenGL window inheriting from Fl_Gl_Window
 class EditorView : public Fl_Gl_Window
 {
