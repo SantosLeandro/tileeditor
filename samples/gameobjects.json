@@ -1,0 +1,14 @@
+{
+    "gameobjects":[
+        {
+            "name":"player"
+        },
+        {
+            "name":"enemy"
+        },
+        {
+            "name":"coin"
+        }
+    ]
+    
+}
