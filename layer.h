@@ -4,6 +4,14 @@
 #include <vector>
 #include "texture.h"
 
+class GameObject{
+public:
+    int x, y;
+    std::string name;
+    GameObject();
+    GameObject(std::string name);
+};
+
 class Layer
 {
 public:

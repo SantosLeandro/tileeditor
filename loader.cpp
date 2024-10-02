@@ -1,5 +1,6 @@
 #include "loader.h"
 #include "texture.h"
+
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream> 
@@ -146,6 +147,28 @@ Level *LoadLevelFile(const char *filename)
 
     
     return nullptr;
+}
+
+void LoadGameObjects()
+{
+    const char* filename = "gameobjects.json";
+    std::ifstream file(filename);
+    if (!file.is_open())
+    {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+        return;
+    }
+
+    json root;
+    file >> root;
+    const json &jGameObjects = root["gameobjects"];
+    for (const auto &gameObject : jGameObjects)
+    {
+        std::string name = gameObject["name"].get<std::string>();
+        
+        TileSelector::gameObjects.push_back(GameObject(name));
+    }
+
 }
 
 void DebugVal(const char *n, int v)

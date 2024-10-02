@@ -348,6 +348,9 @@ EditorUI::EditorUI() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(5, 340, 310, 375, "GameObjects");
+          { BrowserGameObject = new Fl_Browser(15, 355, 290, 345);
+            BrowserGameObject->type(2);
+          } // Fl_Browser* BrowserGameObject
           o->end();
         } // Fl_Group* o
         o->end();
@@ -394,6 +397,10 @@ EditorUI::EditorUI() {
 
 void EditorUI::show(int argc, char **argv) {
   mainWindow->show(argc,argv);
+  LoadGameObjects();
+  for(int i=0;i<TileSelector::gameObjects.size();i++){
+    BrowserGameObject->add(TileSelector::gameObjects[i].name.c_str());
+  }
 }
 
 void EditorUI::loadTileset(const char* file) {

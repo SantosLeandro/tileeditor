@@ -3,6 +3,7 @@
 #include <FL/Fl.H>
 
 
+
 TilesetUI::TilesetUI(int X, int Y, int W, int H, const char *L)
     : Fl_Double_Window(X, Y, W, H, L), clicked(false) {}
 
@@ -96,11 +97,17 @@ void TilesetUI::load_image(const char *file) {
         }
 
         
-        if (img && img->w() > 0 && img->h() > 0) {               
+        if (img && img->w() > 0 && img->h() > 0) {
+            tileset[filename] = img;               
             this->redraw();                 
         } else {
             delete img;                   
             fl_alert("Invalid Image file!");
         }
     }
+}
+
+void TilesetUI::clearTileset()
+{
+    tileset.clear();
 }

@@ -46,6 +46,7 @@ private:
   static void cb_Delete(Fl_Menu_*, void*);
 public:
   TilesetUI *tilesetUI;
+  Fl_Browser *BrowserGameObject;
   Fl_Browser *BrowserLayer;
 private:
   inline void cb_BrowserLayer_i(Fl_Browser*, void*);

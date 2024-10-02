@@ -1,5 +1,13 @@
 #include "layer.h"
 
+GameObject::GameObject(){
+    
+}
+
+GameObject::GameObject(std::string name) {
+    this->name = name;
+}
+
 Layer::Layer()
 {
 

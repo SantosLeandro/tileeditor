@@ -128,10 +128,14 @@ class EditorUI {open
           Fl_Group {} {
             label GameObjects open
             xywh {5 340 310 375}
-          } {}
+          } {
+            Fl_Browser BrowserGameObject {selected
+              xywh {15 355 290 345} type Hold
+            }
+          }
         }
         Fl_Browser BrowserLayer {
-          callback {TileSelector::layerId = BrowserLayer->value() - 1;} selected
+          callback {TileSelector::layerId = BrowserLayer->value() - 1;}
           xywh {5 80 310 170} type Hold when 3
         }
         Fl_Group {} {open
@@ -161,7 +165,11 @@ class EditorUI {open
   }
   Function {show(int argc, char **argv)} {open
   } {
-    code {mainWindow->show(argc,argv);} {}
+    code {mainWindow->show(argc,argv);
+LoadGameObjects();
+for(int i=0;i<TileSelector::gameObjects.size();i++){
+  BrowserGameObject->add(TileSelector::gameObjects[i].name.c_str());
+}} {}
   }
   decl {char* filename} {protected local
   }

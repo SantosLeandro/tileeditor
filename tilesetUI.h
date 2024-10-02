@@ -9,6 +9,7 @@
 #include <FL/fl_draw.H>
 #include <iostream>
 #include <string>
+#include <unordered_map>
 #include "global.h"
 
 // Custom class for Fl_Box to handle mouse clicks and custom drawing
@@ -30,7 +31,10 @@ public:
     int mouseY = 0;
     int tileId = 0;
     int scale = 1;
+    std::unordered_map<std::string, Fl_Image*> tileset;
+    void clearTileset();
 private:
+    
     Fl_Image *img;
     Fl_Image *cpImg;
     bool clicked;  // Track whether the box has been clicked
