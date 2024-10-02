@@ -47,6 +47,10 @@ private:
 public:
   TilesetUI *tilesetUI;
   Fl_Browser *BrowserLayer;
+private:
+  inline void cb_BrowserLayer_i(Fl_Browser*, void*);
+  static void cb_BrowserLayer(Fl_Browser*, void*);
+public:
   Fl_Button *btnPencil;
   Fl_Button *btnEraser;
 private:

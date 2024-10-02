@@ -100,7 +100,7 @@ class EditorUI {open
           }
           MenuItem {} {
             label Delete
-            callback {editorView->deleteTilesData();} selected
+            callback {editorView->deleteTilesData();}
             xywh {0 0 100 20} shortcut 0xffff
           }
           MenuItem {} {
@@ -131,7 +131,8 @@ class EditorUI {open
           } {}
         }
         Fl_Browser BrowserLayer {
-          xywh {5 80 310 170} type Hold
+          callback {TileSelector::layerId = BrowserLayer->value() - 1;} selected
+          xywh {5 80 310 170} type Hold when 3
         }
         Fl_Group {} {open
           xywh {5 30 310 40} box THIN_UP_BOX

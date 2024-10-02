@@ -62,7 +62,7 @@ Level *LoadLevel(const char *filename)
         }
     }
 
-    std::cout << root.dump() << "\n";
+    //std::cout << root.dump() << "\n";
 
     return level;
 }
@@ -97,4 +97,68 @@ bool SaveLevel(Level *level, const char *filename)
     file.close();
 
     return false;
+}
+
+Level *LoadLevelFile(const char *filename)
+{
+    std::ifstream file(filename);
+    std::string str;
+    std::string levelName;
+    std::string layerName;
+    std::string textureName;
+    int lw, lh;
+    int w, h, tileSize;
+    std::getline(file, str);
+    if(str != "levelmap"){
+        return nullptr;
+    }
+    while (std::getline(file, str))
+    {
+       if(str == "#levelname"){
+            std::getline(file, levelName);
+       } else if (str == "#leveldefs"){
+            //Get level w h tileSize
+            std::getline(file, str,' ');
+            w = std::stoi(str);
+            std::getline(file, str,' ');
+            h = std::stoi(str);
+            std::getline(file, str,' ');
+            tileSize = std::stoi(str);
+       } else if (str == "#layer") {
+            std::getline(file, str,' ');
+            layerName = str;
+            std::getline(file, str,' ');
+            lw = std::stoi(str);
+            std::getline(file, str,' ');
+            lh = std::stoi(str);
+            std::getline(file, str,' ');
+            textureName = str;
+       }
+    }
+    DebugVal("level Name",levelName.c_str());
+    DebugVal("w",w);
+    DebugVal("h",h);
+    DebugVal("tileSize",tileSize);
+    DebugVal("layerName",layerName.c_str());
+    DebugVal("lw",lw);
+    DebugVal("lh",lh);
+    DebugVal("texture",textureName.c_str());
+
+    
+    return nullptr;
+}
+
+void DebugVal(const char *n, int v)
+{
+    std::cout<<n<<": "<<v<<"\n"; 
+}
+
+void DebugVal(const char *n, float v)
+{
+    std::cout<<n<<": "<<v<<"\n"; 
+}
+
+void DebugVal(const char *n, const char* v)
+{
+   std::cout<<n<<": "<<v<<"\n"; 
 }

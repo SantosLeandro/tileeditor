@@ -4,9 +4,9 @@
 
 void EditorView::draw()
 {
-    // if(!level.layer[0].texture){
-    //     level.layer[0].texture = new Texture();
-    //     level.layer[0].texture->LoadFromFile("texture/tileset_1616.png");
+    // if(!level.layer[TileSelector::layerId].texture){
+    //     level.layer[TileSelector::layerId].texture = new Texture();
+    //     level.layer[TileSelector::layerId].texture->LoadFromFile("texture/tileset_1616.png");
     // }
     if (!valid())
     {
@@ -170,23 +170,23 @@ void EditorView::insertTile(int x, int y, int id, bool tilememo)
 
     int h = y / level->tileSize;
     int w = x / level->tileSize;
-    // std::cout << "size" << level->layer[0].data.size()<<"\n";
-    // std::cout << "size" << level->layer[0].data[0].size()<<"\n";
+    // std::cout << "size" << level->layer[TileSelector::layerId].data.size()<<"\n";
+    // std::cout << "size" << level->layer[TileSelector::layerId].data[0].size()<<"\n";
     // std::cout << "posX: " << w << std::endl;
     // std::cout << "posY: " << h << std::endl;
-    // std::cout << this->level->layer[0].data[h][w] <<"\n";
+    // std::cout << this->level->layer[TileSelector::layerId].data[h][w] <<"\n";
     if (tilememo)
     {
-        rollback.push_back(TileMemo(x, y, this->level->layer[0].data[h][w]));
+        rollback.push_back(TileMemo(x, y, this->level->layer[TileSelector::layerId].data[h][w]));
         if (rollback.size() > 100)
         {
             rollback.pop_front();
         }
     }
 
-    this->level->layer[0].data[h][w] = id;
+    this->level->layer[TileSelector::layerId].data[h][w] = id;
 
-    // level->layer[0].data[h][w] = tileId;
+    // level->layer[TileSelector::layerId].data[h][w] = tileId;
 }
 
 void EditorView::copyTilesData()
@@ -204,10 +204,10 @@ void EditorView::copyTilesData()
         int xv = 0;
         for (int j = startW; j <= endW; j++)
         {
-            if(i >= this->level->layer[0].data.size() || j >= this->level->layer[0].data[0].size()){
+            if(i >= this->level->layer[TileSelector::layerId].data.size() || j >= this->level->layer[TileSelector::layerId].data[0].size()){
                 continue;
             }
-            copyTiles.push_back(TileMemo(xv * level->tileSize, yv * level->tileSize, this->level->layer[0].data[i][j]));
+            copyTiles.push_back(TileMemo(xv * level->tileSize, yv * level->tileSize, this->level->layer[TileSelector::layerId].data[i][j]));
             xv += 1;
         }
         yv += 1;
@@ -243,12 +243,12 @@ void EditorView::deleteTilesData()
         int xv = 0;
         for (int j = startW; j <= endW; j++)
         {
-            if(i >= this->level->layer[0].data.size() || j >= this->level->layer[0].data[0].size()){
+            if(i >= this->level->layer[TileSelector::layerId].data.size() || j >= this->level->layer[TileSelector::layerId].data[0].size()){
                 continue;
             }
             std::cout<<"j "<<j<<" i "<<i<<"\n";
             this->insertTile(j*level->tileSize, i*level->tileSize, -1, true);
-            //deleteTiles.push_back(TileMemo(xv * level->tileSize, yv * level->tileSize, this->level->layer[0].data[i][j]));
+            //deleteTiles.push_back(TileMemo(xv * level->tileSize, yv * level->tileSize, this->level->layer[TileSelector::layerId].data[i][j]));
             xv += 1;
         }
         yv += 1;

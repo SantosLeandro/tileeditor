@@ -77,6 +77,13 @@ Fl_Menu_Item* EditorUI::menuOpen = EditorUI::menu_ + 2;
 Fl_Menu_Item* EditorUI::menuSave = EditorUI::menu_ + 3;
 Fl_Menu_Item* EditorUI::menuSaveAs = EditorUI::menu_ + 4;
 
+void EditorUI::cb_BrowserLayer_i(Fl_Browser*, void*) {
+  TileSelector::layerId = BrowserLayer->value() - 1;
+}
+void EditorUI::cb_BrowserLayer(Fl_Browser* o, void* v) {
+  ((EditorUI*)(o->parent()->parent()->user_data()))->cb_BrowserLayer_i(o,v);
+}
+
 #include <FL/Fl_Image.H>
 static const unsigned char idata_pencil[] =
 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -347,6 +354,8 @@ EditorUI::EditorUI() {
       } // Fl_Tabs* o
       { BrowserLayer = new Fl_Browser(5, 80, 310, 170);
         BrowserLayer->type(2);
+        BrowserLayer->callback((Fl_Callback*)cb_BrowserLayer);
+        BrowserLayer->when(3);
       } // Fl_Browser* BrowserLayer
       { Fl_Group* o = new Fl_Group(5, 30, 310, 40);
         o->box(FL_THIN_UP_BOX);
