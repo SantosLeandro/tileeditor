@@ -28,8 +28,12 @@ int Layer::Height()
      return data.size();
 }
 
-void Layer::InsertTile(int x, int y, int id)
+void Layer::insertTile(int x, int y, int id)
 {
+    rollback.push_back(data);
+    if(rollback.size()>100){
+        rollback.pop_front();
+    }
     data[y][x] = id;
 }
 
@@ -43,4 +47,12 @@ std::string Layer::getDataStr()
     }
     tmp.pop_back();
     return tmp;
+}
+
+void Layer::undo()
+{
+    if(rollback.size() > 0 ) {
+        data = rollback.back();
+        rollback.pop_back();
+    }
 }

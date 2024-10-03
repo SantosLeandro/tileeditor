@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 #include "texture.h"
 
 class GameObject{
@@ -10,6 +11,15 @@ public:
     std::string name;
     GameObject();
     GameObject(std::string name);
+};
+
+typedef std::vector<std::vector<int>> TileData;
+
+class TileBlock {
+    public:
+    std::vector<int> tiles;
+    int w,h;
+    int layerId;
 };
 
 class Layer
@@ -21,7 +31,11 @@ public:
     int Height();
     std::string name;
     std::vector<std::vector<int>> data;
+    std::list<TileData> rollback;
     Texture *texture = nullptr;
-    void InsertTile(int x, int y, int id);
+    void insertTile(int x, int y, int id);
     std::string getDataStr();
+    void undo();
+    void copyTiles();
+    TileBlock tileCopy;
 };
