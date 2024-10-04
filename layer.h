@@ -39,6 +39,7 @@ public:
     std::string getDataStr();
     void undo();
     void copyTiles(int x1, int y1, int x2, int y2);
-    void update(int w, int h, const char* name, const char* texture); 
+    void update(int w, int h, const char* name, const char* texture);
+    void removeGameObject(int x, int y);
     TileBlock tileCopy;
 };

@@ -20,6 +20,7 @@
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Value_Input.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Round_Button.H>
 
 class EditorUI {
 public:
@@ -49,6 +50,10 @@ private:
 public:
   TilesetUI *tilesetUI;
   Fl_Browser *BrowserGameObject;
+private:
+  inline void cb_BrowserGameObject_i(Fl_Browser*, void*);
+  static void cb_BrowserGameObject(Fl_Browser*, void*);
+public:
   Fl_Input *layerName;
   Fl_Value_Input *layerW;
   Fl_Value_Input *layerH;
@@ -80,6 +85,20 @@ private:
   static void cb_btnPaste(Fl_Button*, void*);
 public:
   Fl_Button *btnSelect;
+private:
+  inline void cb__i(Fl_Group*, void*);
+  static void cb_(Fl_Group*, void*);
+public:
+  Fl_Round_Button *radioTiles;
+private:
+  inline void cb_radioTiles_i(Fl_Round_Button*, void*);
+  static void cb_radioTiles(Fl_Round_Button*, void*);
+public:
+  Fl_Round_Button *radioObjects;
+private:
+  inline void cb_radioObjects_i(Fl_Round_Button*, void*);
+  static void cb_radioObjects(Fl_Round_Button*, void*);
+public:
   void show(int argc, char **argv);
 protected:
   char* filename; 

@@ -250,7 +250,7 @@ void GLRender::DrawGameObject(Sprite sprite, int x, int y, Texture* texture)
       float srcW = (sprite.w /  (float)texture->Width());
       float srcH = (sprite.h /  (float)texture->Height());
 
-      std::cout<<"x "<<srcX<<" y "<<srcY<<" w "<<srcW<<" srcH "<<srcH<<"\n";
+      //std::cout<<"x "<<srcX<<" y "<<srcY<<" w "<<srcW<<" srcH "<<srcH<<"\n";
       //**
       glTexCoord2f(srcX, srcY);
       glVertex3f(x, y, 0);

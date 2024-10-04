@@ -1,4 +1,5 @@
 #include "layer.h"
+#include "global.h"
 
 GameObject::GameObject(){
     
@@ -73,6 +74,25 @@ void Layer::update(int w, int h, const char* name, const char* texture)
     this->name = name;
     this->texture->filename = texture;
 }
+
+void Layer::removeGameObject(int x, int y)
+{
+        int w = 0; 
+        int h = 0;
+        for (int i = 0; i <= gameObjects.size(); ++i) {
+            w = TileSelector::sprites[gameObjects[i].name].w;
+            h = TileSelector::sprites[gameObjects[i].name].h;
+            if (
+                (x >= gameObjects[i].x && x <= (gameObjects[i].x + w)) &&
+                (y >= gameObjects[i].y && y <= (gameObjects[i].y + h))) {
+                
+                // Move the last object to the current position
+                gameObjects[i] = std::move(gameObjects[gameObjects.size() - 1]);
+                // Remove the last object
+                gameObjects.pop_back();
+            }
+        }
+    }
 
 void Layer::copyTiles(int x1, int y1, int x2, int y2)
 {

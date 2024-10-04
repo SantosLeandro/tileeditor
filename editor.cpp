@@ -25,10 +25,9 @@ void EditorView::draw()
     }
 }
 
-// Override the handle() function to capture events
+
 int EditorView::handle(int event)
 {
-    // selectionTool = false;
     int deltaX = Fl::event_x() - oldX;
     int deltaY = Fl::event_y() - oldY;
     oldX = Fl::event_x();
@@ -42,34 +41,25 @@ int EditorView::handle(int event)
         {
             render.ScaleDown();
             this->redraw();
-            // Scrolling up
-            printf("Mouse wheel scrolled up.\n");
         }
         else if (dy > 0)
         {
             render.ScaleUp();
             this->redraw();
-
-            // Scrolling down
-            printf("Mouse wheel scrolled down.\n");
         }
 
         return 1;
     }
     case FL_PUSH: // Mouse button press
-        // std::cout << "Mouse button pressed at ("
-        //           << Fl::event_x() << ", " << Fl::event_y() << ")"
-        //           << std::endl;
 
         if (Fl::event_button() == FL_LEFT_MOUSE)
         {
-            // if(copyTiles.size()>0){
-            //     std::list<TileMemo>::iterator it;
-            //     for (it = copyTiles.begin(); it != copyTiles.end(); ++it){
-            //         this->insertTile(mouseX,mouseY,it->id,true);
-            //     }
-            // }
-            this->insertTile(mouseX, mouseY, TileSelector::tileId, true);
+            if(insertMode = 0) {
+                this->insertTile(mouseX, mouseY, TileSelector::tileId, true);
+                
+            } else {
+                insertGameObject(mouseX, mouseY, gameObjectId);
+            }
             this->redraw();
         }
         if (Fl::event_button() == FL_RIGHT_MOUSE)
@@ -91,10 +81,6 @@ int EditorView::handle(int event)
             selectionTool = true;
             selectX = (Fl::event_x() - render.GetX()) / render.GetScale();
             selectY = (Fl::event_y() - render.GetY()) / render.GetScale();
-            // selectX = selectX / level->tileSize * level->tileSize - 1;
-            // selectY = selectY / level->tileSize * level->tileSize - 1;
-            // selectX =  Fl::event_x();// - startX;
-            // selectY =  Fl::event_y();// - startY;
 
             this->redraw();
         }
@@ -104,12 +90,10 @@ int EditorView::handle(int event)
             selectX = 0;
             selectY = 0;
         }
-        // std::cout << "Mouse drag at ("
-        //           << Fl::event_x() << ", " << Fl::event_y() << ")"
-        //           << std::endl;
+
         return 1;
     case FL_RELEASE: // Mouse button release
-        // std::cout << "Mouse button released" << std::endl;
+
         return 1;
     case FL_KEYDOWN: // Key press
         if ((Fl::event_state() & FL_CTRL) && Fl::event_key() == 'z')
@@ -134,10 +118,9 @@ int EditorView::handle(int event)
             this->redraw();
         }
 
-        std::cout << "Key pressed: " << Fl::event_key() << std::endl;
         return 1;
     case FL_KEYUP: // Key release
-        std::cout << "Key released: " << Fl::event_key() << std::endl;
+
         return 1;
     case FL_FOCUS:   // Window focus
         return 1;    // Accept the focus
@@ -193,8 +176,23 @@ void EditorView::insertTile(int x, int y, int id, bool tilememo)
     }
 
     this->level->layer[TileSelector::layerId].data[h][w] = id;
+}
 
-    // level->layer[TileSelector::layerId].data[h][w] = tileId;
+void EditorView::insertGameObject(int x, int y, int id)
+{
+    if (!level)
+    {
+        return;
+    }
+
+    if (id < 0) {
+        this->level->layer[TileSelector::layerId].removeGameObject(x,y);
+    } else {
+        int h = y / level->tileSize * level->tileSize;
+        int w = x / level->tileSize * level->tileSize;
+        this->level->layer[TileSelector::layerId].gameObjects.push_back(GameObject(TileSelector::gameObjects[id].name,w,h));
+    }
+    
 }
 
 void EditorView::copyTilesData()
@@ -239,12 +237,10 @@ void EditorView::pasteTilesData()
 void EditorView::deleteTilesData()
 {
     selectionTool = false;
-    //copyTiles.clear();
     int endW = selectX / level->tileSize;
     int endH = selectY / level->tileSize;
     int startW = startX / level->tileSize;
     int startH = startY / level->tileSize;
-    //std::vector<TileMemo> deleteTiles;
     int yv = 0;
     for (int i = startH; i <= endH; i++)
     {
@@ -254,9 +250,7 @@ void EditorView::deleteTilesData()
             if(i >= this->level->layer[TileSelector::layerId].data.size() || j >= this->level->layer[TileSelector::layerId].data[0].size()){
                 continue;
             }
-            std::cout<<"j "<<j<<" i "<<i<<"\n";
             this->insertTile(j*level->tileSize, i*level->tileSize, -1, true);
-            //deleteTiles.push_back(TileMemo(xv * level->tileSize, yv * level->tileSize, this->level->layer[TileSelector::layerId].data[i][j]));
             xv += 1;
         }
         yv += 1;

@@ -29,7 +29,7 @@ class EditorUI {open
   } {
     Fl_Window mainWindow {
       label LevelEditor open
-      xywh {2240 78 1280 720} type Single resizable
+      xywh {341 259 1280 720} type Single resizable
       code0 {Fl::scheme("plastic");} visible
     } {
       Fl_Box editorView {
@@ -66,7 +66,13 @@ class EditorUI {open
   BrowserLayer->clear();
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
-  }} selected
+  }
+  if(BrowserGameObject->size() == 0 ) {
+    LoadGameObjects();
+    for(int i=0;i<TileSelector::gameObjects.size();i++){
+      BrowserGameObject->add(TileSelector::gameObjects[i].name.c_str());
+    }
+  }}
             xywh {0 0 100 20}
           }
           MenuItem menuSave {
@@ -109,7 +115,7 @@ class EditorUI {open
         }
       }
       Fl_Group {} {open
-        xywh {-10 25 335 780}
+        xywh {-10 25 330 780}
       } {
         Fl_Tabs {} {open
           xywh {5 315 310 400}
@@ -126,15 +132,16 @@ class EditorUI {open
           }
           Fl_Group {} {
             label GameObjects open
-            xywh {5 340 310 375} hide
+            xywh {5 340 310 375}
           } {
             Fl_Browser BrowserGameObject {
+              callback {editorView->gameObjectId = BrowserGameObject->value() - 1;} selected
               xywh {15 355 290 345} type Hold
             }
           }
           Fl_Group {} {
             label Layer open
-            xywh {5 340 310 375}
+            xywh {5 340 310 375} hide
           } {
             Fl_Input layerName {
               label Name
@@ -168,7 +175,7 @@ layerW->value(editorView->level->layer[TileSelector::layerId].Width());
 layerH->value(editorView->level->layer[TileSelector::layerId].Height());}
           xywh {5 80 310 170} type Hold when 3
         }
-        Fl_Group {} {open
+        Fl_Group {} {
           xywh {5 30 310 40} box THIN_UP_BOX
         } {
           Fl_Button btnPencil {
@@ -190,16 +197,28 @@ layerH->value(editorView->level->layer[TileSelector::layerId].Height());}
             tooltip {Selection Tool} image {icons/selection.png} xywh {230 35 45 30}
           }
         }
+        Fl_Group {} {
+          callback {editorView->insertMode = 1;} open
+          xywh {5 260 305 50}
+        } {
+          Fl_Round_Button radioTiles {
+            label Tiles
+            callback {//calbackradio
+editorView->insertMode = 0;}
+            xywh {5 265 25 25} type Radio down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button radioObjects {
+            label Objects
+            callback {//calbackradio}
+            xywh {60 265 25 25} type Radio down_box ROUND_DOWN_BOX
+          }
+        }
       }
     }
   }
   Function {show(int argc, char **argv)} {open
   } {
-    code {mainWindow->show(argc,argv);
-LoadGameObjects();
-for(int i=0;i<TileSelector::gameObjects.size();i++){
-  BrowserGameObject->add(TileSelector::gameObjects[i].name.c_str());
-}} {}
+    code {mainWindow->show(argc,argv);} {}
   }
   decl {char* filename} {protected local
   }

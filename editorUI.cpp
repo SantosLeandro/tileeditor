@@ -14,21 +14,17 @@ void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   editorView->level = LoadLevel(newfile);
   editorView->redraw();
   TileSelector::tileSize = editorView->level->tileSize;
-  //tilesetUI->load_image("tileset_1616.png");
+  tilesetUI->load_image("tileset_1616.png");
   BrowserLayer->clear();
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
-    if(tilesetUI->tileset[editorView->level->layer[i].texture->filename]== nullptr) {
-      tilesetUI->load_image(editorView->level->layer[i].texture->filename.c_str());
-    }
-  };
-  
+  }
   if(BrowserGameObject->size() == 0 ) {
     LoadGameObjects();
     for(int i=0;i<TileSelector::gameObjects.size();i++){
       BrowserGameObject->add(TileSelector::gameObjects[i].name.c_str());
     }
-  }
+  };
 }
 void EditorUI::cb_menuOpen(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuOpen_i(o,v);
@@ -85,6 +81,13 @@ Fl_Menu_Item* EditorUI::menuNew = EditorUI::menu_ + 1;
 Fl_Menu_Item* EditorUI::menuOpen = EditorUI::menu_ + 2;
 Fl_Menu_Item* EditorUI::menuSave = EditorUI::menu_ + 3;
 Fl_Menu_Item* EditorUI::menuSaveAs = EditorUI::menu_ + 4;
+
+void EditorUI::cb_BrowserGameObject_i(Fl_Browser*, void*) {
+  editorView->gameObjectId = BrowserGameObject->value() - 1;
+}
+void EditorUI::cb_BrowserGameObject(Fl_Browser* o, void* v) {
+  ((EditorUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_BrowserGameObject_i(o,v);
+}
 
 void EditorUI::cb_applyLayer_i(Fl_Button*, void*) {
   editorView->applyLayer(layerW->value(),layerH->value(),layerName->value(),layerTexture->value());
@@ -147,6 +150,7 @@ static Fl_Image *image_pencil() {
 
 void EditorUI::cb_btnEraser_i(Fl_Button*, void*) {
   TileSelector::tileId = -1;
+  editorView->gameObjectId = -1;
 }
 void EditorUI::cb_btnEraser(Fl_Button* o, void* v) {
   ((EditorUI*)(o->parent()->parent()->parent()->user_data()))->cb_btnEraser_i(o,v);
@@ -333,6 +337,28 @@ static Fl_Image *image_selection() {
   return image;
 }
 
+void EditorUI::cb__i(Fl_Group*, void*) {
+  editorView->insertMode = 1;
+}
+void EditorUI::cb_(Fl_Group* o, void* v) {
+  ((EditorUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
+}
+
+void EditorUI::cb_radioTiles_i(Fl_Round_Button*, void*) {
+  //calbackradio
+editorView->insertMode = 0;
+}
+void EditorUI::cb_radioTiles(Fl_Round_Button* o, void* v) {
+  ((EditorUI*)(o->parent()->parent()->parent()->user_data()))->cb_radioTiles_i(o,v);
+}
+
+void EditorUI::cb_radioObjects_i(Fl_Round_Button*, void*) {
+  //calbackradio;
+}
+void EditorUI::cb_radioObjects(Fl_Round_Button* o, void* v) {
+  ((EditorUI*)(o->parent()->parent()->parent()->user_data()))->cb_radioObjects_i(o,v);
+}
+
 EditorUI::EditorUI() {
   { mainWindow = new Fl_Window(1280, 720, "LevelEditor");
     mainWindow->user_data((void*)(this));
@@ -350,7 +376,7 @@ EditorUI::EditorUI() {
     { Fl_Menu_Bar* o = new Fl_Menu_Bar(0, 0, 1280, 25);
       o->menu(menu_);
     } // Fl_Menu_Bar* o
-    { Fl_Group* o = new Fl_Group(-10, 25, 335, 780);
+    { Fl_Group* o = new Fl_Group(-10, 25, 330, 780);
       { Fl_Tabs* o = new Fl_Tabs(5, 315, 310, 400);
         { Fl_Group* o = new Fl_Group(5, 340, 310, 375, "Tileset");
           o->box(FL_GLEAM_DOWN_FRAME);
@@ -369,13 +395,14 @@ EditorUI::EditorUI() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(5, 340, 310, 375, "GameObjects");
-          o->hide();
           { BrowserGameObject = new Fl_Browser(15, 355, 290, 345);
             BrowserGameObject->type(2);
+            BrowserGameObject->callback((Fl_Callback*)cb_BrowserGameObject);
           } // Fl_Browser* BrowserGameObject
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(5, 340, 310, 375, "Layer");
+          o->hide();
           { layerName = new Fl_Input(55, 360, 250, 25, "Name");
           } // Fl_Input* layerName
           { layerW = new Fl_Value_Input(55, 390, 250, 25, "Width");
@@ -421,6 +448,20 @@ EditorUI::EditorUI() {
           btnSelect->tooltip("Selection Tool");
           btnSelect->image( image_selection() );
         } // Fl_Button* btnSelect
+        o->end();
+      } // Fl_Group* o
+      { Fl_Group* o = new Fl_Group(5, 260, 305, 50);
+        o->callback((Fl_Callback*)cb_);
+        { radioTiles = new Fl_Round_Button(5, 265, 25, 25, "Tiles");
+          radioTiles->type(102);
+          radioTiles->down_box(FL_ROUND_DOWN_BOX);
+          radioTiles->callback((Fl_Callback*)cb_radioTiles);
+        } // Fl_Round_Button* radioTiles
+        { radioObjects = new Fl_Round_Button(60, 265, 25, 25, "Objects");
+          radioObjects->type(102);
+          radioObjects->down_box(FL_ROUND_DOWN_BOX);
+          radioObjects->callback((Fl_Callback*)cb_radioObjects);
+        } // Fl_Round_Button* radioObjects
         o->end();
       } // Fl_Group* o
       o->end();

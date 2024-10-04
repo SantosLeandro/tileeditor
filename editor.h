@@ -40,6 +40,7 @@ public:
     void handleMouseMovement(int x, int y);
     void handleSelectionTool(int startX, int startY, int endX, int endY);
     void insertTile(int x, int y, int id, bool tilememo);
+    void insertGameObject(int x, int y, int id);
     void copyTilesData();
     void pasteTilesData();
     void deleteTilesData();
@@ -57,6 +58,8 @@ public:
     int startY = 0;
     int selectX = 0;
     int selectY = 0;
+    int insertMode = 0;
+    int gameObjectId = 0;
     std::list<TileMemo> rollback;
     std::list<TileMemo> copyTiles;
 };
