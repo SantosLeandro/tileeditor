@@ -26,6 +26,7 @@ set(SOURCES
     loader.cpp
     tilesetUI.cpp
     global.cpp
+    sprite.cpp
 )
 
 # Add executable

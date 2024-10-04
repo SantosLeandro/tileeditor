@@ -8,6 +8,13 @@ GameObject::GameObject(std::string name) {
     this->name = name;
 }
 
+GameObject::GameObject(std::string name, int x, int y)
+{
+    this->name = name;
+    this->x = x;
+    this->y = y;
+}
+
 Layer::Layer()
 {
 

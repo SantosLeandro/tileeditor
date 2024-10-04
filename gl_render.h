@@ -1,5 +1,6 @@
 #pragma once
 #include "level.h"
+#include "sprite.h"
 
 class GLRender
 {
@@ -18,6 +19,8 @@ public:
     void DrawSelectionTool(const Level *level, int x1, int y1, int x2, int y2);
     void DrawGrid(int w, int h, int t);
     void DrawBackground(int w, int h, int t);
+    void DrawLayerLines(int w, int h, int t);
+    void DrawGameObject(Sprite sprite, int x, int y, Texture* texture);
     void ClearScreen();
     void ScaleUp();
     void ScaleDown();

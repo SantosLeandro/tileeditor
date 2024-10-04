@@ -1,5 +1,6 @@
 #include "loader.h"
 #include "texture.h"
+#include "sprite.h"
 
 #include <nlohmann/json.hpp>
 #include <fstream>
@@ -59,6 +60,17 @@ Level *LoadLevel(const char *filename)
             for (int j = 0; j < width; j++)
             {
                 level->layer[index].data[i].push_back(std::stoi(temp[(i * width) + j]));
+            }
+        }
+
+        if(layer.contains("gameobject")) {
+            const json &jGameObjects = layer["gameobject"];
+            for (const auto &go : jGameObjects)
+            {
+                std::string goName = go["name"].get<std::string>();
+                int goX = go["x"].get<int>();
+                int goY = go["y"].get<int>();
+                level->layer[index].gameObjects.push_back(GameObject(goName, goX, goY));
             }
         }
     }
@@ -151,7 +163,10 @@ Level *LoadLevelFile(const char *filename)
 
 void LoadGameObjects()
 {
-    const char* filename = "gameobjects.json";
+    TileSelector::goTex = new Texture();
+    TileSelector::goTex->LoadFromFile("gameobject.png");
+    
+    const char* filename = "gameobject.json";
     std::ifstream file(filename);
     if (!file.is_open())
     {
@@ -161,11 +176,21 @@ void LoadGameObjects()
 
     json root;
     file >> root;
+    
     const json &jGameObjects = root["gameobjects"];
     for (const auto &gameObject : jGameObjects)
     {
         std::string name = gameObject["name"].get<std::string>();
-        
+        int x = gameObject["x"].get<int>();
+        int y = gameObject["y"].get<int>();
+        int w = gameObject["w"].get<int>();
+        int h = gameObject["h"].get<int>();
+        DebugVal("sx",x);
+        DebugVal("sy",y);
+        DebugVal("sw",w);
+        DebugVal("sh",h);
+
+        TileSelector::sprites[name] = Sprite(x,y,w,h);
         TileSelector::gameObjects.push_back(GameObject(name));
     }
 

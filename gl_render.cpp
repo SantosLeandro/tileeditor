@@ -1,6 +1,7 @@
 #include "gl_render.h"
 #include "layer.h"
 #include "texture.h"
+#include "global.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <iostream>
@@ -91,7 +92,7 @@ void GLRender::DrawLayer(const Layer *layer, int t)
   {
     for (int w = 0; w < layer->data[0].size(); w++)
     {
-      if (layer->data[h][w] < 0)
+      if (layer->data[h][w] < 1)
       {
         continue;
       }
@@ -124,6 +125,15 @@ void GLRender::DrawLayer(const Layer *layer, int t)
     }
   }
   glEnd();
+
+  for(int i=0; i < layer->gameObjects.size();i++) {
+    DrawGameObject(
+      TileSelector::sprites[layer->gameObjects[i].name],
+      layer->gameObjects[i].x,
+      layer->gameObjects[i].y,
+      TileSelector::goTex
+    );
+  }
 }
 
 void GLRender::DrawLevel(const Level *level)
@@ -207,6 +217,52 @@ void GLRender::DrawBackground(int w, int h, int t)
   glVertex3f(0, h * t, 0);
   glVertex3f(w * t, h * t, 0);
   glVertex3f(w * t, 0, 0);
+  glEnd();
+}
+
+void GLRender::DrawLayerLines(int w, int h, int t)
+{
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glLineWidth(1.0f);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glBegin(GL_QUADS);
+  glColor4f(1.0f, 0.0f, 1.0f,0.5f);
+  glVertex3f(0, 0, 0);
+  glVertex3f(0, h * t, 0);
+  glVertex3f(w * t, h * t, 0);
+  glVertex3f(w * t, 0, 0);
+  glEnd();
+}
+
+void GLRender::DrawGameObject(Sprite sprite, int x, int y, Texture* texture)
+{
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  glEnable(GL_TEXTURE_2D);
+
+  glBindTexture(GL_TEXTURE_2D, texture->Id());
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+  glBegin(GL_QUADS);
+      float srcY = (sprite.y  / (float)texture->Height());
+      float srcX = (sprite.x /  (float)texture->Width());
+      float srcW = (sprite.w /  (float)texture->Width());
+      float srcH = (sprite.h /  (float)texture->Height());
+
+      std::cout<<"x "<<srcX<<" y "<<srcY<<" w "<<srcW<<" srcH "<<srcH<<"\n";
+      //**
+      glTexCoord2f(srcX, srcY);
+      glVertex3f(x, y, 0);
+      //**
+      glTexCoord2f(srcX, srcY + srcH);
+      glVertex3f(x, (y + sprite.h), 0);
+      //**
+      glTexCoord2f(srcX + srcW, srcY + srcH);
+      glVertex3f((x+sprite.w), (y + sprite.h), 0);
+      //**
+      glTexCoord2f(srcX + srcW, srcY);
+      glVertex3f((x+sprite.w), (y), 0);
   glEnd();
 }
 

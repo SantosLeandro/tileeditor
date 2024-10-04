@@ -11,6 +11,7 @@ public:
     std::string name;
     GameObject();
     GameObject(std::string name);
+    GameObject(std::string name, int x, int y);
 };
 
 typedef std::vector<std::vector<int>> TileData;
@@ -31,6 +32,7 @@ public:
     int Height();
     std::string name;
     std::vector<std::vector<int>> data;
+    std::vector<GameObject> gameObjects;
     std::list<TileData> rollback;
     Texture *texture = nullptr;
     void insertTile(int x, int y, int id);

@@ -15,6 +15,9 @@ void EditorView::draw()
     }
     render.ClearScreen();
     render.DrawLevel(level);
+    if(level) {
+        render.DrawLayerLines(level->layer[TileSelector::layerId].data[0].size(), level->layer[TileSelector::layerId].data.size(),level->tileSize);
+    }
     render.DrawCursor(mouseX, mouseY, level);
     if (selectionTool)
     {
@@ -54,9 +57,9 @@ int EditorView::handle(int event)
         return 1;
     }
     case FL_PUSH: // Mouse button press
-        std::cout << "Mouse button pressed at ("
-                  << Fl::event_x() << ", " << Fl::event_y() << ")"
-                  << std::endl;
+        // std::cout << "Mouse button pressed at ("
+        //           << Fl::event_x() << ", " << Fl::event_y() << ")"
+        //           << std::endl;
 
         if (Fl::event_button() == FL_LEFT_MOUSE)
         {
@@ -101,12 +104,12 @@ int EditorView::handle(int event)
             selectX = 0;
             selectY = 0;
         }
-        std::cout << "Mouse drag at ("
-                  << Fl::event_x() << ", " << Fl::event_y() << ")"
-                  << std::endl;
+        // std::cout << "Mouse drag at ("
+        //           << Fl::event_x() << ", " << Fl::event_y() << ")"
+        //           << std::endl;
         return 1;
     case FL_RELEASE: // Mouse button release
-        std::cout << "Mouse button released" << std::endl;
+        // std::cout << "Mouse button released" << std::endl;
         return 1;
     case FL_KEYDOWN: // Key press
         if ((Fl::event_state() & FL_CTRL) && Fl::event_key() == 'z')

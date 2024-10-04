@@ -19,6 +19,13 @@ void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
   };
+  
+  if(BrowserGameObject->size() == 0 ) {
+    LoadGameObjects();
+    for(int i=0;i<TileSelector::gameObjects.size();i++){
+      BrowserGameObject->add(TileSelector::gameObjects[i].name.c_str());
+    }
+  }
 }
 void EditorUI::cb_menuOpen(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuOpen_i(o,v);
@@ -423,10 +430,6 @@ EditorUI::EditorUI() {
 
 void EditorUI::show(int argc, char **argv) {
   mainWindow->show(argc,argv);
-  LoadGameObjects();
-  for(int i=0;i<TileSelector::gameObjects.size();i++){
-    BrowserGameObject->add(TileSelector::gameObjects[i].name.c_str());
-  }
 }
 
 void EditorUI::loadTileset(const char* file) {
