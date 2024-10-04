@@ -38,7 +38,7 @@ class EditorUI {open
         code0 {\#include "editor.h"}
         class EditorView
       }
-      Fl_Menu_Bar {} {
+      Fl_Menu_Bar {} {open
         xywh {0 0 1280 25}
       } {
         Submenu {} {
@@ -66,8 +66,7 @@ class EditorUI {open
   BrowserLayer->clear();
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
-  }
-  BrowserLayer->add("foreground");}
+  }} selected
             xywh {0 0 100 20}
           }
           MenuItem menuSave {
@@ -156,7 +155,7 @@ class EditorUI {open
             Fl_Button applyLayer {
               label Apply
               callback {editorView->applyLayer(layerW->value(),layerH->value(),layerName->value(),layerTexture->value());
-BrowserLayer->text( BrowserLayer->value(), layerName->value());;} selected
+BrowserLayer->text( BrowserLayer->value(), layerName->value());;}
               xywh {55 485 115 25}
             }
           }

@@ -18,7 +18,7 @@ void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   BrowserLayer->clear();
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
-  }
+  };
 }
 void EditorUI::cb_menuOpen(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuOpen_i(o,v);
@@ -78,7 +78,7 @@ Fl_Menu_Item* EditorUI::menuSaveAs = EditorUI::menu_ + 4;
 
 void EditorUI::cb_applyLayer_i(Fl_Button*, void*) {
   editorView->applyLayer(layerW->value(),layerH->value(),layerName->value(),layerTexture->value());
-  BrowserLayer->text( BrowserLayer->value(), layerName->value());
+BrowserLayer->text( BrowserLayer->value(), layerName->value());;
 }
 void EditorUI::cb_applyLayer(Fl_Button* o, void* v) {
   ((EditorUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_applyLayer_i(o,v);
@@ -86,10 +86,10 @@ void EditorUI::cb_applyLayer(Fl_Button* o, void* v) {
 
 void EditorUI::cb_BrowserLayer_i(Fl_Browser*, void*) {
   TileSelector::layerId = BrowserLayer->value() - 1;
-  layerName->value(editorView->level->layer[TileSelector::layerId].name.c_str());
-  layerTexture->value(editorView->level->layer[TileSelector::layerId].texture->filename.c_str());
-  layerW->value(editorView->level->layer[TileSelector::layerId].Width());
-  layerH->value(editorView->level->layer[TileSelector::layerId].Height());
+layerName->value(editorView->level->layer[TileSelector::layerId].name.c_str());
+layerTexture->value(editorView->level->layer[TileSelector::layerId].texture->filename.c_str());
+layerW->value(editorView->level->layer[TileSelector::layerId].Width());
+layerH->value(editorView->level->layer[TileSelector::layerId].Height());
 }
 void EditorUI::cb_BrowserLayer(Fl_Browser* o, void* v) {
   ((EditorUI*)(o->parent()->parent()->user_data()))->cb_BrowserLayer_i(o,v);
