@@ -8,6 +8,9 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <FL/Fl_BMP_Image.H>
+#include <FL/Fl_PNG_Image.H>
+#include <FL/Fl_JPEG_Image.H>
 
 using json = nlohmann::ordered_json;
 
@@ -44,7 +47,7 @@ Level *LoadLevel(const char *filename)
 
         level->layer[index].texture = new Texture();
         level->layer[index].texture->LoadFromFile(textureFilename.c_str());
-        
+
         std::string eData = layer["data"].get<std::string>();
         std::stringstream ss(eData);
         std::string token;
@@ -93,6 +96,14 @@ bool SaveLevel(Level *level, const char *filename)
         root["layer"][i]["height"] = level->layer[i].Height();
         root["layer"][i]["texture"] = level->layer[i].texture->filename;
         root["layer"][i]["data"] = level->layer[i].getDataStr();
+
+        int j = 0;
+        for(auto &go: level->layer[i].gameObjects){
+            root["layer"][i]["gameobject"][j]["name"] = go.name;
+            root["layer"][i]["gameobject"][j]["x"] = go.x;
+            root["layer"][i]["gameobject"][j]["y"] = go.y;
+            j++;
+        }
     }
 
     std::ofstream file(filename);
@@ -165,7 +176,7 @@ void LoadGameObjects()
 {
     TileSelector::goTex = new Texture();
     TileSelector::goTex->LoadFromFile("gameobject.png");
-    
+
     const char* filename = "gameobject.json";
     std::ifstream file(filename);
     if (!file.is_open())
@@ -194,6 +205,31 @@ void LoadGameObjects()
         TileSelector::gameObjects.push_back(GameObject(name));
     }
 
+}
+
+void LoadImage(const char *file) {
+
+    // if (file != NULL) {
+    //     img = nullptr;
+
+    //     std::string filename = file;
+    //     if (filename.find(".bmp") != std::string::npos) {
+    //         img = new Fl_BMP_Image(file); 
+    //     } else if (filename.find(".png") != std::string::npos) {
+    //         img = new Fl_PNG_Image(file);  
+    //     } else if (filename.find(".jpg") != std::string::npos || filename.find(".jpeg") != std::string::npos) {
+    //         img = new Fl_JPEG_Image(file); 
+    //     }
+
+        
+    //     if (img && img->w() > 0 && img->h() > 0) {
+    //         tileset[filename] = img;               
+    //         return img;              
+    //     } else {
+    //         delete img;                   
+    //         fl_alert("Invalid Image file!");
+    //     }
+    // }
 }
 
 void DebugVal(const char *n, int v)

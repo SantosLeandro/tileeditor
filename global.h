@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <FL/Fl.H>
 
 class TileSelector
 {
@@ -19,6 +20,7 @@ class TileSelector
     static std::string tileset;
     static std::vector<GameObject> gameObjects;
     static std::unordered_map<std::string, Sprite> sprites;
+    static void Release();
     
 };
 

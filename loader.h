@@ -11,6 +11,8 @@ Level* LoadLevelFile(const char* filename);
 
 void LoadGameObjects();
 
+void LoadImage(const char* filename);
+
 void DebugVal(const char *n, int v);
 void DebugVal(const char *n, float v);
 void DebugVal(const char *n, const char *v);

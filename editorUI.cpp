@@ -14,10 +14,13 @@ void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   editorView->level = LoadLevel(newfile);
   editorView->redraw();
   TileSelector::tileSize = editorView->level->tileSize;
-  tilesetUI->load_image("tileset_1616.png");
+  //tilesetUI->load_image("tileset_1616.png");
   BrowserLayer->clear();
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
+    if(tilesetUI->tileset[editorView->level->layer[i].texture->filename]== nullptr) {
+      tilesetUI->load_image(editorView->level->layer[i].texture->filename.c_str());
+    }
   };
   
   if(BrowserGameObject->size() == 0 ) {

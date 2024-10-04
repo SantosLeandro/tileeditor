@@ -7,6 +7,9 @@ void TileSelector::registerGameObject(GameObject o)
     gameObjects.push_back(o);
 }
 
+void TileSelector::Release()
+{
+}
 
 int TileSelector::tileId = 0;
 int TileSelector::tileSize = 8;
