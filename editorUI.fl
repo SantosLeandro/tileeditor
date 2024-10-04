@@ -29,7 +29,7 @@ class EditorUI {open
   } {
     Fl_Window mainWindow {
       label LevelEditor open
-      xywh {527 230 1280 720} type Single resizable
+      xywh {2240 78 1280 720} type Single resizable
       code0 {Fl::scheme("plastic");} visible
     } {
       Fl_Box editorView {
@@ -116,8 +116,8 @@ class EditorUI {open
           xywh {5 315 310 400}
         } {
           Fl_Group {} {
-            label Tileset open selected
-            xywh {5 340 310 375} box GLEAM_DOWN_FRAME
+            label Tileset open
+            xywh {5 340 310 375} box GLEAM_DOWN_FRAME hide
           } {
             Fl_Box tilesetUI {
               xywh {10 345 300 365} color 44 selection_color 45 align 581
@@ -135,7 +135,7 @@ class EditorUI {open
           }
           Fl_Group {} {
             label Layer open
-            xywh {5 340 310 375} hide
+            xywh {5 340 310 375}
           } {
             Fl_Input layerName {
               label Name
@@ -155,12 +155,18 @@ class EditorUI {open
             }
             Fl_Button applyLayer {
               label Apply
+              callback {editorView->applyLayer(layerW->value(),layerH->value(),layerName->value(),layerTexture->value());
+BrowserLayer->text( BrowserLayer->value(), layerName->value());;} selected
               xywh {55 485 115 25}
             }
           }
         }
         Fl_Browser BrowserLayer {
-          callback {TileSelector::layerId = BrowserLayer->value() - 1;}
+          callback {TileSelector::layerId = BrowserLayer->value() - 1;
+layerName->value(editorView->level->layer[TileSelector::layerId].name.c_str());
+layerTexture->value(editorView->level->layer[TileSelector::layerId].texture->filename.c_str());
+layerW->value(editorView->level->layer[TileSelector::layerId].Width());
+layerH->value(editorView->level->layer[TileSelector::layerId].Height());}
           xywh {5 80 310 170} type Hold when 3
         }
         Fl_Group {} {open

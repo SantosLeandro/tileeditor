@@ -57,6 +57,16 @@ void Layer::undo()
     }
 }
 
+void Layer::update(int w, int h, const char* name, const char* texture)
+{
+    data.resize(h);
+    for(int i = 0; i < h; i++){
+        data[i].resize(w);
+    }
+    this->name = name;
+    this->texture->filename = texture;
+}
+
 void Layer::copyTiles(int x1, int y1, int x2, int y2)
 {
     // tileCopy.tiles.clear();

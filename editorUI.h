@@ -54,6 +54,10 @@ public:
   Fl_Value_Input *layerH;
   Fl_Input *layerTexture;
   Fl_Button *applyLayer;
+private:
+  inline void cb_applyLayer_i(Fl_Button*, void*);
+  static void cb_applyLayer(Fl_Button*, void*);
+public:
   Fl_Browser *BrowserLayer;
 private:
   inline void cb_BrowserLayer_i(Fl_Browser*, void*);

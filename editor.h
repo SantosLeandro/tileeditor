@@ -44,6 +44,7 @@ public:
     void pasteTilesData();
     void deleteTilesData();
     void undo();
+    void applyLayer(int w, int h, const char* name, const char* texture);
     Level *level = nullptr;
     int oldX = 0;
     int oldY = 0;

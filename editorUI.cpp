@@ -76,6 +76,14 @@ Fl_Menu_Item* EditorUI::menuOpen = EditorUI::menu_ + 2;
 Fl_Menu_Item* EditorUI::menuSave = EditorUI::menu_ + 3;
 Fl_Menu_Item* EditorUI::menuSaveAs = EditorUI::menu_ + 4;
 
+void EditorUI::cb_applyLayer_i(Fl_Button*, void*) {
+  editorView->applyLayer(layerW->value(),layerH->value(),layerName->value(),layerTexture->value());
+  BrowserLayer->text( BrowserLayer->value(), layerName->value());
+}
+void EditorUI::cb_applyLayer(Fl_Button* o, void* v) {
+  ((EditorUI*)(o->parent()->parent()->parent()->parent()->user_data()))->cb_applyLayer_i(o,v);
+}
+
 void EditorUI::cb_BrowserLayer_i(Fl_Browser*, void*) {
   TileSelector::layerId = BrowserLayer->value() - 1;
   layerName->value(editorView->level->layer[TileSelector::layerId].name.c_str());
@@ -336,6 +344,7 @@ EditorUI::EditorUI() {
       { Fl_Tabs* o = new Fl_Tabs(5, 315, 310, 400);
         { Fl_Group* o = new Fl_Group(5, 340, 310, 375, "Tileset");
           o->box(FL_GLEAM_DOWN_FRAME);
+          o->hide();
           { tilesetUI = new TilesetUI(10, 345, 300, 365);
             tilesetUI->box(FL_NO_BOX);
             tilesetUI->color((Fl_Color)44);
@@ -357,7 +366,6 @@ EditorUI::EditorUI() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(5, 340, 310, 375, "Layer");
-          o->hide();
           { layerName = new Fl_Input(55, 360, 250, 25, "Name");
           } // Fl_Input* layerName
           { layerW = new Fl_Value_Input(55, 390, 250, 25, "Width");
@@ -367,6 +375,7 @@ EditorUI::EditorUI() {
           { layerTexture = new Fl_Input(55, 450, 250, 25, "Tex");
           } // Fl_Input* layerTexture
           { applyLayer = new Fl_Button(55, 485, 115, 25, "Apply");
+            applyLayer->callback((Fl_Callback*)cb_applyLayer);
           } // Fl_Button* applyLayer
           o->end();
         } // Fl_Group* o

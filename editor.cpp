@@ -268,3 +268,8 @@ void EditorView::undo()
         this->redraw();
     }
 }
+
+void EditorView::applyLayer(int w, int h, const char* name, const char* texture)
+{
+   this->level->layer[TileSelector::layerId].update(w,h,name,texture); 
+}
