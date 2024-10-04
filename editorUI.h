@@ -17,6 +17,8 @@
 #include <FL/Fl_Tabs.H>
 #include "tilesetUI.h"
 #include <FL/Fl_Browser.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Value_Input.H>
 #include <FL/Fl_Button.H>
 
 class EditorUI {
@@ -47,6 +49,11 @@ private:
 public:
   TilesetUI *tilesetUI;
   Fl_Browser *BrowserGameObject;
+  Fl_Input *layerName;
+  Fl_Value_Input *layerW;
+  Fl_Value_Input *layerH;
+  Fl_Input *layerTexture;
+  Fl_Button *applyLayer;
   Fl_Browser *BrowserLayer;
 private:
   inline void cb_BrowserLayer_i(Fl_Browser*, void*);

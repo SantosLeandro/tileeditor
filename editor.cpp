@@ -170,6 +170,11 @@ void EditorView::insertTile(int x, int y, int id, bool tilememo)
 
     int h = y / level->tileSize;
     int w = x / level->tileSize;
+
+    if (h > this->level->layer[TileSelector::layerId].data.size() || w > this->level->layer[TileSelector::layerId].data[0].size()) {
+        std::cout<<"Out of bounds";
+        return;
+    }
     // std::cout << "size" << level->layer[TileSelector::layerId].data.size()<<"\n";
     // std::cout << "size" << level->layer[TileSelector::layerId].data[0].size()<<"\n";
     // std::cout << "posX: " << w << std::endl;

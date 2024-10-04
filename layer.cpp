@@ -56,3 +56,27 @@ void Layer::undo()
         rollback.pop_back();
     }
 }
+
+void Layer::copyTiles(int x1, int y1, int x2, int y2)
+{
+    // tileCopy.tiles.clear();
+    // int endW = x1 / level->tileSize;
+    // int endH = y1 / level->tileSize;
+    // int startW = x2 / level->tileSize;
+    // int startH = y2 / level->tileSize;
+
+    // int yv = 0;
+    // for (int i = y1; i <= endH; i++)
+    // {
+    //     int xv = 0;
+    //     for (int j = startW; j <= endW; j++)
+    //     {
+    //         if(i >= this->level->layer[TileSelector::layerId].data.size() || j >= this->level->layer[TileSelector::layerId].data[0].size()){
+    //             continue;
+    //         }
+    //         copyTiles.push_back(TileMemo(xv * level->tileSize, yv * level->tileSize, this->level->layer[TileSelector::layerId].data[i][j]));
+    //         xv += 1;
+    //     }
+    //     yv += 1;
+    }
+}

@@ -19,7 +19,6 @@ void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
   }
-  BrowserLayer->add("foreground");
 }
 void EditorUI::cb_menuOpen(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuOpen_i(o,v);
@@ -79,6 +78,10 @@ Fl_Menu_Item* EditorUI::menuSaveAs = EditorUI::menu_ + 4;
 
 void EditorUI::cb_BrowserLayer_i(Fl_Browser*, void*) {
   TileSelector::layerId = BrowserLayer->value() - 1;
+  layerName->value(editorView->level->layer[TileSelector::layerId].name.c_str());
+  layerTexture->value(editorView->level->layer[TileSelector::layerId].texture->filename.c_str());
+  layerW->value(editorView->level->layer[TileSelector::layerId].Width());
+  layerH->value(editorView->level->layer[TileSelector::layerId].Height());
 }
 void EditorUI::cb_BrowserLayer(Fl_Browser* o, void* v) {
   ((EditorUI*)(o->parent()->parent()->user_data()))->cb_BrowserLayer_i(o,v);
@@ -333,7 +336,6 @@ EditorUI::EditorUI() {
       { Fl_Tabs* o = new Fl_Tabs(5, 315, 310, 400);
         { Fl_Group* o = new Fl_Group(5, 340, 310, 375, "Tileset");
           o->box(FL_GLEAM_DOWN_FRAME);
-          o->hide();
           { tilesetUI = new TilesetUI(10, 345, 300, 365);
             tilesetUI->box(FL_NO_BOX);
             tilesetUI->color((Fl_Color)44);
@@ -348,9 +350,24 @@ EditorUI::EditorUI() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(5, 340, 310, 375, "GameObjects");
+          o->hide();
           { BrowserGameObject = new Fl_Browser(15, 355, 290, 345);
             BrowserGameObject->type(2);
           } // Fl_Browser* BrowserGameObject
+          o->end();
+        } // Fl_Group* o
+        { Fl_Group* o = new Fl_Group(5, 340, 310, 375, "Layer");
+          o->hide();
+          { layerName = new Fl_Input(55, 360, 250, 25, "Name");
+          } // Fl_Input* layerName
+          { layerW = new Fl_Value_Input(55, 390, 250, 25, "Width");
+          } // Fl_Value_Input* layerW
+          { layerH = new Fl_Value_Input(55, 420, 250, 25, "Height");
+          } // Fl_Value_Input* layerH
+          { layerTexture = new Fl_Input(55, 450, 250, 25, "Tex");
+          } // Fl_Input* layerTexture
+          { applyLayer = new Fl_Button(55, 485, 115, 25, "Apply");
+          } // Fl_Button* applyLayer
           o->end();
         } // Fl_Group* o
         o->end();

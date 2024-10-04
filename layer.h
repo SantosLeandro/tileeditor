@@ -36,6 +36,6 @@ public:
     void insertTile(int x, int y, int id);
     std::string getDataStr();
     void undo();
-    void copyTiles();
+    void copyTiles(int x1, int y1, int x2, int y2);
     TileBlock tileCopy;
 };
