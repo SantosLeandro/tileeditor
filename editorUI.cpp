@@ -338,7 +338,7 @@ static Fl_Image *image_selection() {
 }
 
 void EditorUI::cb__i(Fl_Group*, void*) {
-  editorView->insertMode = 1;
+ 
 }
 void EditorUI::cb_(Fl_Group* o, void* v) {
   ((EditorUI*)(o->parent()->parent()->user_data()))->cb__i(o,v);
@@ -353,7 +353,7 @@ void EditorUI::cb_radioTiles(Fl_Round_Button* o, void* v) {
 }
 
 void EditorUI::cb_radioObjects_i(Fl_Round_Button*, void*) {
-  //calbackradio;
+   editorView->insertMode = 1;
 }
 void EditorUI::cb_radioObjects(Fl_Round_Button* o, void* v) {
   ((EditorUI*)(o->parent()->parent()->parent()->user_data()))->cb_radioObjects_i(o,v);

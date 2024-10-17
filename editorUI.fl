@@ -209,7 +209,8 @@ editorView->insertMode = 0;}
           }
           Fl_Round_Button radioObjects {
             label Objects
-            callback {//calbackradio}
+            callback {//calbackradio
+editorView->insertMode = 1;}
             xywh {60 265 25 25} type Radio down_box ROUND_DOWN_BOX
           }
         }

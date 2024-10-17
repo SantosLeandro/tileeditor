@@ -54,7 +54,7 @@ int EditorView::handle(int event)
 
         if (Fl::event_button() == FL_LEFT_MOUSE)
         {
-            if(insertMode = 0) {
+            if(insertMode == 0) {
                 this->insertTile(mouseX, mouseY, TileSelector::tileId, true);
                 
             } else {
