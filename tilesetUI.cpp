@@ -11,10 +11,16 @@ TilesetUI::TilesetUI(int X, int Y, int W, int H, const char *L)
 void TilesetUI::draw() {
     Fl_Double_Window::draw();
     if(img){
-        std::cout <<" x() "<<x()<<" y() "<<y()<<"\n";
-        //img->draw(0,0,w(),h());
+        // std::cout <<" x() "<<x()<<" y() "<<y()<<"\n";
+        // //img->draw(0,0,w(),h());
+        delete cpImg;
         cpImg = img->copy(img->w()*scale,img->h()*scale);
-        cpImg->draw(offsetX,offsetY,img->w(),img->h());
+        cpImg->draw(offsetX,offsetY,img->w()*scale,img->h()*scale);
+
+        // int scaledW = img->w() * scale;
+        // int scaledH = img->h() * scale;
+        // img->draw(offsetX, offsetY, scaledW, scaledH);
+        //img->draw(offsetX, offsetY, 1000, 100);
         // w(512);
         // h(512);
     }

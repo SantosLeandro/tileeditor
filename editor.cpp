@@ -4,10 +4,6 @@
 
 void EditorView::draw()
 {
-    // if(!level.layer[TileSelector::layerId].texture){
-    //     level.layer[TileSelector::layerId].texture = new Texture();
-    //     level.layer[TileSelector::layerId].texture->LoadFromFile("texture/tileset_1616.png");
-    // }
     if (!valid())
     {
         render.UpdateViewPort(w(), h());
@@ -86,7 +82,6 @@ int EditorView::handle(int event)
         }
         else
         {
-            std::cout << " stop drag\n";
             selectX = 0;
             selectY = 0;
         }
