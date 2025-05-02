@@ -182,7 +182,7 @@ layerH->value(editorView->level->layer[TileSelector::layerId].Height());}
             image {icons/pencil.png} xywh {10 35 45 30}
           }
           Fl_Button btnEraser {
-            callback {TileSelector::tileId = -1;}
+            callback {TileSelector::tileId = 0;}
             image {icons/eraser.png} xywh {65 35 45 30}
           }
           Fl_Button btnCopy {

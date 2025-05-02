@@ -14,13 +14,13 @@ void TilesetUI::draw() {
         std::cout <<" x() "<<x()<<" y() "<<y()<<"\n";
         //img->draw(0,0,w(),h());
         cpImg = img->copy(img->w()*scale,img->h()*scale);
-        cpImg->draw(0,0,w(),h());
+        cpImg->draw(offsetX,offsetY,img->w(),img->h());
         // w(512);
         // h(512);
     }
     
     //fl_draw_image(img,0,0,512,512);
-
+    // cursor vermelho
     fl_color(FL_RED);
     fl_line_style(1,2,0);
     fl_rect(mouseX, mouseY, tileSize*scale, tileSize*scale);
@@ -63,17 +63,39 @@ int TilesetUI::handle(int event) {
             if (Fl::event_button() == FL_LEFT_MOUSE) {  
                 if(img){
                     int col = img->w() / tileSize;
-                    tileId =  (Fl::event_y() / (tileSize*scale)  * col) + (Fl::event_x() / (tileSize*scale));
+                    tileId =  ((Fl::event_y()-offsetY) / (tileSize*scale)  * col) + ((Fl::event_x()-offsetX) / (tileSize*scale));
                     TileSelector::tileId = tileId;
                 }
                 redraw();  
+            } if (Fl::event_button() == FL_MIDDLE_MOUSE) {
+                moveTileset = true;
+                imgPosX = Fl::event_x()  / (tileSize*scale) * (tileSize*scale);
+                imgPosY = Fl::event_y() / (tileSize*scale) * (tileSize*scale);
+                
+                redraw();
+            }
+            return 1;
+        case FL_RELEASE:
+            if (Fl::event_button() == FL_MIDDLE_MOUSE) {
+                moveTileset = false;
+            }
+            return 1;
+        case FL_DRAG:
+            if (moveTileset) {
+                int dx = Fl::event_x() - imgPosX;
+                int dy = Fl::event_y() - imgPosY;
+                offsetX += dx;
+                offsetY += dy;
+                imgPosX = Fl::event_x();
+                imgPosY = Fl::event_y();
+                redraw();
             }
             return 1;
         case FL_MOVE:
             //std::cout <<" mouse move\n";
            
-            mouseX = Fl::event_x()/ (tileSize*scale) * (tileSize*scale);
-            mouseY = Fl::event_y()/ (tileSize*scale) * (tileSize*scale);
+            mouseX = ((Fl::event_x() - offsetX) / (tileSize * scale)) * (tileSize * scale) + offsetX;
+            mouseY = ((Fl::event_y() - offsetY) / (tileSize * scale)) * (tileSize * scale) + offsetY;
             //std::cout <<" x "<<Fl::event_x()<<" y "<<Fl::event_y()<<"\n";
             redraw();
             return 1;

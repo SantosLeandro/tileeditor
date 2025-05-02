@@ -60,6 +60,7 @@ public:
     int selectY = 0;
     int insertMode = 0;
     int gameObjectId = 0;
+    bool leftButton = false;
     std::list<TileMemo> rollback;
     std::list<TileMemo> copyTiles;
 };

@@ -1,5 +1,6 @@
 #include "layer.h"
 #include "global.h"
+#include "level.h"
 
 GameObject::GameObject(){
     
@@ -94,26 +95,26 @@ void Layer::removeGameObject(int x, int y)
         }
     }
 
-void Layer::copyTiles(int x1, int y1, int x2, int y2)
+void Layer::copyTiles(int x1, int y1, int x2, int y2, const Level *level)
 {
-    // tileCopy.tiles.clear();
-    // int endW = x1 / level->tileSize;
-    // int endH = y1 / level->tileSize;
-    // int startW = x2 / level->tileSize;
-    // int startH = y2 / level->tileSize;
+    copyData.clear();
+    int endW = x1 / level->tileSize;
+    int endH = y1 / level->tileSize;
+    int startW = x2 / level->tileSize;
+    int startH = y2 / level->tileSize;
 
-    // int yv = 0;
-    // for (int i = y1; i <= endH; i++)
-    // {
-    //     int xv = 0;
-    //     for (int j = startW; j <= endW; j++)
-    //     {
-    //         if(i >= this->level->layer[TileSelector::layerId].data.size() || j >= this->level->layer[TileSelector::layerId].data[0].size()){
-    //             continue;
-    //         }
-    //         copyTiles.push_back(TileMemo(xv * level->tileSize, yv * level->tileSize, this->level->layer[TileSelector::layerId].data[i][j]));
-    //         xv += 1;
-    //     }
-    //     yv += 1;
-    //}
+    int yv = 0;
+    for (int i = y1; i <= endH; i++)
+    {
+        int xv = 0;
+        for (int j = startW; j <= endW; j++)
+        {
+            if(i >= level->layer[TileSelector::layerId].data.size() || j >= level->layer[TileSelector::layerId].data[0].size()){
+                continue;
+            }
+            copyData.push_back(TileBlock(xv * level->tileSize, yv * level->tileSize, level->layer[TileSelector::layerId].data[i][j]));
+            xv += 1;
+        }
+        yv += 1;
+    }
 }

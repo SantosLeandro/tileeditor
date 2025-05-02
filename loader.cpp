@@ -31,7 +31,8 @@ Level *LoadLevel(const char *filename)
     level->name = root["name"].get<std::string>();
     level->w = root["width"].get<int>();
     level->h = root["height"].get<int>();
-
+    level->tileSize = root["tilesize"].get<int>();
+    TileSelector::tileSize = root["tilesize"].get<int>();
     const json &jLayers = root["layer"];
     //level->layer.resize(jLayers.size());
     level->layer.clear();

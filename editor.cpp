@@ -91,9 +91,22 @@ int EditorView::handle(int event)
             selectY = 0;
         }
 
+        if (Fl::event_button() == FL_LEFT_MOUSE)
+        {
+            if(leftButton && insertMode == 0) {
+                this->handleMouseMovement(Fl::event_x(), Fl::event_y());
+                this->insertTile(mouseX, mouseY, TileSelector::tileId, true);
+            }
+            leftButton = true;
+        }
+       
+
         return 1;
     case FL_RELEASE: // Mouse button release
-
+        if (Fl::event_button() == FL_LEFT_MOUSE)
+        {
+            leftButton = false;
+        }
         return 1;
     case FL_KEYDOWN: // Key press
         if ((Fl::event_state() & FL_CTRL) && Fl::event_key() == 'z')
@@ -120,8 +133,6 @@ int EditorView::handle(int event)
 
         return 1;
     case FL_KEYUP: // Key release
-
-        return 1;
     case FL_FOCUS:   // Window focus
         return 1;    // Accept the focus
     case FL_UNFOCUS: // Window loses focus
@@ -157,15 +168,15 @@ void EditorView::insertTile(int x, int y, int id, bool tilememo)
     int h = y / level->tileSize;
     int w = x / level->tileSize;
 
-    if (h > this->level->layer[TileSelector::layerId].data.size() || w > this->level->layer[TileSelector::layerId].data[0].size()) {
+    if (h > this->level->layer[TileSelector::layerId].data.size()-1 || w > this->level->layer[TileSelector::layerId].data[0].size()-1) {
         std::cout<<"Out of bounds";
         return;
     }
-    // std::cout << "size" << level->layer[TileSelector::layerId].data.size()<<"\n";
-    // std::cout << "size" << level->layer[TileSelector::layerId].data[0].size()<<"\n";
-    // std::cout << "posX: " << w << std::endl;
-    // std::cout << "posY: " << h << std::endl;
-    // std::cout << this->level->layer[TileSelector::layerId].data[h][w] <<"\n";
+
+    if(this->level->layer[TileSelector::layerId].data[h][w] == id) {
+        return;
+    }
+
     if (tilememo)
     {
         rollback.push_back(TileMemo(x, y, this->level->layer[TileSelector::layerId].data[h][w]));
@@ -228,6 +239,7 @@ void EditorView::pasteTilesData()
         std::list<TileMemo>::iterator it;
         for (it = copyTiles.begin(); it != copyTiles.end(); ++it)
         {
+            
             this->insertTile(mouseX + it->x, mouseY + it->y, it->id, true);
         }
     }
@@ -250,7 +262,7 @@ void EditorView::deleteTilesData()
             if(i >= this->level->layer[TileSelector::layerId].data.size() || j >= this->level->layer[TileSelector::layerId].data[0].size()){
                 continue;
             }
-            this->insertTile(j*level->tileSize, i*level->tileSize, -1, true);
+            this->insertTile(j*level->tileSize, i*level->tileSize, 0, true);
             xv += 1;
         }
         yv += 1;

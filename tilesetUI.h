@@ -31,6 +31,11 @@ public:
     int mouseY = 0;
     int tileId = 0;
     int scale = 1;
+    int imgPosX = 0;
+    int imgPosY = 0;
+    bool moveTileset = false;
+    int offsetX;
+    int offsetY;
     std::unordered_map<std::string, Fl_Image*> tileset;
     void clearTileset();
 private:
