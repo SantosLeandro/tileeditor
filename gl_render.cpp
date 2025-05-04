@@ -86,7 +86,7 @@ void GLRender::DrawLayer(const Layer *layer, int t)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-  glColor3f(1, 1, 1);
+  glColor4f(1, 1, 1,alpha);
   glBegin(GL_QUADS);
   for (int h = 0; h < layer->data.size(); h++)
   {
@@ -152,6 +152,12 @@ void GLRender::DrawLevel(const Level *level)
   {
     if (level->layer[i].texture != nullptr)
     {
+      if(TileSelector::layerId == i)
+      {
+        alpha = 1.0f;
+      } else {
+        alpha = 0.7f;
+      }
       DrawLayer(&level->layer[i], level->tileSize);
     }
   }

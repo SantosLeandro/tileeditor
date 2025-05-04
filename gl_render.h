@@ -9,6 +9,7 @@ protected:
     int scale = 1;
     int x = 0;
     int y = 0;
+    float alpha = 1.0f;
 public:
     void UpdateViewPort(int w, int h);
     void Prepare2D();
