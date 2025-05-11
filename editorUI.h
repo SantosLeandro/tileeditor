@@ -104,5 +104,7 @@ protected:
   char* filename; 
 public:
   void loadTileset(const char* file);
+protected:
+  std::string currentFilename; 
 };
 #endif

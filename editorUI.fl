@@ -25,10 +25,9 @@ decl {\#include "global.h"} {public global
 
 class EditorUI {open
 } {
-  Function {EditorUI()} {open
-  } {
+  Function {EditorUI()} {} {
     Fl_Window mainWindow {
-      label LevelEditor open
+      label LevelEditor
       xywh {341 259 1280 720} type Single resizable
       code0 {Fl::scheme("plastic");} visible
     } {
@@ -63,7 +62,9 @@ class EditorUI {open
   editorView->redraw();
   TileSelector::tileSize = editorView->level->tileSize;
   if(editorView->level->layer.size() != 0) {
-    tilesetUI->load_image(editorView->level->layer[0].texture->filename.c_str());
+    for(auto layer: editorView->level->layer) {
+      tilesetUI->load_image(layer.texture->filename.c_str());
+    }
   } else {
     tilesetUI->load_image("tileset_1616.png");
   }
@@ -76,12 +77,13 @@ class EditorUI {open
     for(int i=0;i<TileSelector::gameObjects.size();i++){
       BrowserGameObject->add(TileSelector::gameObjects[i].name.c_str());
     }
-  }}
+  }
+  currentFilename = newfile;} selected
             xywh {0 0 100 20}
           }
           MenuItem menuSave {
             label Save
-            callback {SaveLevel(editorView->level,"backup.json");}
+            callback {SaveLevel(editorView->level,currentFilename.c_str());}
             xywh {0 0 100 20}
           }
           MenuItem menuSaveAs {
@@ -90,7 +92,8 @@ class EditorUI {open
  char *newfile = fl_file_chooser("Save as?", "*.json", filename);
  if(newfile){
    SaveLevel(editorView->level,newfile);
- }}
+ }
+ currentFilename = newfile;}
             xywh {0 0 100 20} shortcut 0x40073
           }
         }
@@ -177,7 +180,7 @@ layerName->value(editorView->level->layer[TileSelector::layerId].name.c_str());
 layerTexture->value(editorView->level->layer[TileSelector::layerId].texture->filename.c_str());
 layerW->value(editorView->level->layer[TileSelector::layerId].Width());
 layerH->value(editorView->level->layer[TileSelector::layerId].Height());
-tilesetUI->SetTileSet(editorView->level->layer[TileSelector::layerId].texture->filename);} selected
+tilesetUI->SetTileSet(editorView->level->layer[TileSelector::layerId].texture->filename);}
           xywh {5 80 310 170} type Hold when 3
         }
         Fl_Group {} {open
@@ -223,14 +226,12 @@ editorView->insertMode = 1;}
       }
     }
   }
-  Function {show(int argc, char **argv)} {open
-  } {
+  Function {show(int argc, char **argv)} {} {
     code {mainWindow->show(argc,argv);} {}
   }
   decl {char* filename} {protected local
   }
-  Function {loadTileset(const char* file)} {open
-  } {
+  Function {loadTileset(const char* file)} {} {
     code {if (file != NULL) {
         Fl_Image *img = nullptr;
 
@@ -253,5 +254,7 @@ editorView->insertMode = 1;}
             fl_alert("Invalid Image file!");
         }
     }} {}
+  }
+  decl {std::string currentFilename;} {protected local
   }
 }

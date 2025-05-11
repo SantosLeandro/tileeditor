@@ -30,14 +30,15 @@ void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
     for(int i=0;i<TileSelector::gameObjects.size();i++){
       BrowserGameObject->add(TileSelector::gameObjects[i].name.c_str());
     }
-  };
+  }
+  currentFilename = newfile;
 }
 void EditorUI::cb_menuOpen(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuOpen_i(o,v);
 }
 
 void EditorUI::cb_menuSave_i(Fl_Menu_*, void*) {
-  SaveLevel(editorView->level,"backup.json");
+  SaveLevel(editorView->level,currentFilename.c_str());
 }
 void EditorUI::cb_menuSave(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuSave_i(o,v);
@@ -48,7 +49,8 @@ void EditorUI::cb_menuSaveAs_i(Fl_Menu_*, void*) {
  char *newfile = fl_file_chooser("Save as?", "*.json", filename);
  if(newfile){
    SaveLevel(editorView->level,newfile);
- };
+ }
+ currentFilename = newfile;
 }
 void EditorUI::cb_menuSaveAs(Fl_Menu_* o, void* v) {
   ((EditorUI*)(o->parent()->user_data()))->cb_menuSaveAs_i(o,v);
