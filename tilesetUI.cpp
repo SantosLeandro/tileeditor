@@ -13,10 +13,10 @@ void TilesetUI::draw() {
     if(img){
         // std::cout <<" x() "<<x()<<" y() "<<y()<<"\n";
         // //img->draw(0,0,w(),h());
-        delete cpImg;
-        cpImg = img->copy(img->w()*scale,img->h()*scale);
-        cpImg->draw(offsetX,offsetY,img->w()*scale,img->h()*scale);
-
+        // delete cpImg;
+        // cpImg = img->copy(img->w()*scale,img->h()*scale);
+        img->draw(offsetX,offsetY,img->w()*scale,img->h()*scale);
+        //img->draw(offsetX, offsetY, 5, 5);
         // int scaledW = img->w() * scale;
         // int scaledH = img->h() * scale;
         // img->draw(offsetX, offsetY, scaledW, scaledH);
@@ -115,6 +115,12 @@ void TilesetUI::load_image(const char *file) {
     if (file != NULL) {
         img = nullptr;
 
+        for(auto &o: tileset){
+            if(o.first == file) {
+                return;
+            }
+        }
+
         std::string filename = file;
         if (filename.find(".bmp") != std::string::npos) {
             img = new Fl_BMP_Image(file); 
@@ -138,4 +144,10 @@ void TilesetUI::load_image(const char *file) {
 void TilesetUI::clearTileset()
 {
     tileset.clear();
+}
+
+void TilesetUI::SetTileSet(const std::string &filename)
+{
+    img = tileset[filename];
+    this->redraw();
 }

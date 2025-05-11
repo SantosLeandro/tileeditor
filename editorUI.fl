@@ -62,7 +62,11 @@ class EditorUI {open
   editorView->level = LoadLevel(newfile);
   editorView->redraw();
   TileSelector::tileSize = editorView->level->tileSize;
-  tilesetUI->load_image("tileset_1616.png");
+  if(editorView->level->layer.size() != 0) {
+    tilesetUI->load_image(editorView->level->layer[0].texture->filename.c_str());
+  } else {
+    tilesetUI->load_image("tileset_1616.png");
+  }
   BrowserLayer->clear();
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
@@ -77,7 +81,7 @@ class EditorUI {open
           }
           MenuItem menuSave {
             label Save
-            callback {SaveLevel(editorView->level,"backup.json");} selected
+            callback {SaveLevel(editorView->level,"backup.json");}
             xywh {0 0 100 20}
           }
           MenuItem menuSaveAs {
@@ -132,7 +136,7 @@ class EditorUI {open
           }
           Fl_Group {} {
             label GameObjects open
-            xywh {5 340 310 375}
+            xywh {5 340 310 375} hide
           } {
             Fl_Browser BrowserGameObject {
               callback {editorView->gameObjectId = BrowserGameObject->value() - 1;}
@@ -141,7 +145,7 @@ class EditorUI {open
           }
           Fl_Group {} {
             label Layer open
-            xywh {5 340 310 375} hide
+            xywh {5 340 310 375}
           } {
             Fl_Input layerName {
               label Name
@@ -172,17 +176,19 @@ BrowserLayer->text( BrowserLayer->value(), layerName->value());;}
 layerName->value(editorView->level->layer[TileSelector::layerId].name.c_str());
 layerTexture->value(editorView->level->layer[TileSelector::layerId].texture->filename.c_str());
 layerW->value(editorView->level->layer[TileSelector::layerId].Width());
-layerH->value(editorView->level->layer[TileSelector::layerId].Height());}
+layerH->value(editorView->level->layer[TileSelector::layerId].Height());
+tilesetUI->SetTileSet(editorView->level->layer[TileSelector::layerId].texture->filename);} selected
           xywh {5 80 310 170} type Hold when 3
         }
-        Fl_Group {} {
+        Fl_Group {} {open
           xywh {5 30 310 40} box THIN_UP_BOX
         } {
           Fl_Button btnPencil {
             image {icons/pencil.png} xywh {10 35 45 30}
           }
           Fl_Button btnEraser {
-            callback {TileSelector::tileId = 0;}
+            callback {TileSelector::tileId = 0;
+editorView->gameObjectId = -1;}
             image {icons/eraser.png} xywh {65 35 45 30}
           }
           Fl_Button btnCopy {

@@ -15,11 +15,12 @@ void EditorUI::cb_menuOpen_i(Fl_Menu_*, void*) {
   editorView->redraw();
   TileSelector::tileSize = editorView->level->tileSize;
   if(editorView->level->layer.size() != 0) {
-    tilesetUI->load_image(editorView->level->layer[0].texture->filename.c_str());
+    for(auto layer: editorView->level->layer) {
+      tilesetUI->load_image(layer.texture->filename.c_str());
+    }
   } else {
     tilesetUI->load_image("tileset_1616.png");
   }
-  
   BrowserLayer->clear();
   for(int i=0; i < editorView->level->layer.size();i++) {
     BrowserLayer->add(editorView->level->layer[i].name.c_str());
@@ -108,6 +109,7 @@ layerName->value(editorView->level->layer[TileSelector::layerId].name.c_str());
 layerTexture->value(editorView->level->layer[TileSelector::layerId].texture->filename.c_str());
 layerW->value(editorView->level->layer[TileSelector::layerId].Width());
 layerH->value(editorView->level->layer[TileSelector::layerId].Height());
+tilesetUI->SetTileSet(editorView->level->layer[TileSelector::layerId].texture->filename);
 }
 void EditorUI::cb_BrowserLayer(Fl_Browser* o, void* v) {
   ((EditorUI*)(o->parent()->parent()->user_data()))->cb_BrowserLayer_i(o,v);
@@ -155,7 +157,7 @@ static Fl_Image *image_pencil() {
 
 void EditorUI::cb_btnEraser_i(Fl_Button*, void*) {
   TileSelector::tileId = 0;
-  editorView->gameObjectId = -1;
+editorView->gameObjectId = -1;
 }
 void EditorUI::cb_btnEraser(Fl_Button* o, void* v) {
   ((EditorUI*)(o->parent()->parent()->parent()->user_data()))->cb_btnEraser_i(o,v);
@@ -401,6 +403,7 @@ EditorUI::EditorUI() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(5, 340, 310, 375, "GameObjects");
+          o->hide();
           { BrowserGameObject = new Fl_Browser(15, 355, 290, 345);
             BrowserGameObject->type(2);
             BrowserGameObject->callback((Fl_Callback*)cb_BrowserGameObject);
@@ -408,7 +411,6 @@ EditorUI::EditorUI() {
           o->end();
         } // Fl_Group* o
         { Fl_Group* o = new Fl_Group(5, 340, 310, 375, "Layer");
-          o->hide();
           { layerName = new Fl_Input(55, 360, 250, 25, "Name");
           } // Fl_Input* layerName
           { layerW = new Fl_Value_Input(55, 390, 250, 25, "Width");

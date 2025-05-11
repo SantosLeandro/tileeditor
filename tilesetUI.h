@@ -38,6 +38,7 @@ public:
     int offsetY;
     std::unordered_map<std::string, Fl_Image*> tileset;
     void clearTileset();
+    void SetTileSet(const std::string &tileset);
 private:
     
     Fl_Image *img;
