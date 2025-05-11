@@ -11,7 +11,7 @@ public:
     int tileSize = 16;
     std::string name;
     std::vector<Layer> layer;
-
+    std::string options;
     Level();
     void Init();
 };

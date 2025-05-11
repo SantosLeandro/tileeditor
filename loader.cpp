@@ -32,6 +32,9 @@ Level *LoadLevel(const char *filename)
     level->w = root["width"].get<int>();
     level->h = root["height"].get<int>();
     level->tileSize = root["tilesize"].get<int>();
+    if (root.contains("options")) {
+        level->options = root["options"].dump();
+    }
     TileSelector::tileSize = root["tilesize"].get<int>();
     const json &jLayers = root["layer"];
     //level->layer.resize(jLayers.size());
@@ -91,6 +94,16 @@ bool SaveLevel(Level *level, const char *filename)
     root["width"] = level->w;
     root["height"] = level->h;
     root["name"] = level->name;
+    if (level->options != "") {
+        try {
+            root["options"] = json::parse(level->options);
+        } catch (const std::exception& e) {
+            std::cerr << "Erro ao converter options: " << e.what() << std::endl;
+            root["options"] = json::object();
+        }
+    } else {
+        root["options"] = json::object();
+    }
     for(int i=0; i < level->layer.size();i++){
         root["layer"][i]["name"] = level->layer[i].name;
         root["layer"][i]["width"] = level->layer[i].Width();
