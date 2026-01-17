@@ -3,7 +3,7 @@
 #include <iostream>
 // Define STB_IMAGE_IMPLEMENTATION before including stb_image.h
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+#include <stb/stb_image.h>
 
 Texture::Texture()
 {

@@ -1,13 +1,25 @@
 {
     "gameobjects":[
         {
-            "name":"player"
+            "name":"player",
+            "x":0,
+            "y":0,
+            "w":32,
+            "h":32
         },
         {
-            "name":"enemy"
+            "name":"enemy",
+            "x":0,
+            "y":0,
+            "w":32,
+            "h":32
         },
         {
-            "name":"coin"
+            "name":"coin",
+            "x":0,
+            "y":0,
+            "w":32,
+            "h":32
         }
     ]
     

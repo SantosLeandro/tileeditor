@@ -15,7 +15,12 @@ void TilesetUI::draw() {
         // //img->draw(0,0,w(),h());
         // delete cpImg;
         // cpImg = img->copy(img->w()*scale,img->h()*scale);
-        img->draw(offsetX,offsetY,img->w()*scale,img->h()*scale);
+        
+        //img->draw(offsetX,offsetY,img->w()*scale,img->h()*scale);
+
+        Fl_Image* scaled = img->copy(img->w() * scale, img->h() * scale);
+        scaled->draw(offsetX, offsetY);
+        delete scaled;
         //img->draw(offsetX, offsetY, 5, 5);
         // int scaledW = img->w() * scale;
         // int scaledH = img->h() * scale;

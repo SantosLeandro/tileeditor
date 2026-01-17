@@ -1,0 +1,34 @@
+levelmap
+
+#levelname
+Demo level 01
+
+#leveldefs
+20 10 16
+
+#layer
+backgorund 10 5 tileset_1616.png
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+
+gameobjects 3
+player 10 10
+enemy 20 30
+turtle 40 40
+
+#layer
+foreground
+10 5
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0
+
+gameobjects 3
+player 10 10
+enemy 20 30
+turtle 40 40
